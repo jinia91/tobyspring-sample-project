@@ -2,11 +2,27 @@ package org.ptudy.spring_kotlin
 
 import java.sql.Connection
 import java.sql.DriverManager
-import java.sql.DriverManager.getConnection
 
-abstract class UserDao {
+interface ConnectionMaker {
+    fun makeConnection(): Connection
+}
+
+class DConnectionMaker : ConnectionMaker {
+    override fun makeConnection(): Connection {
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/spring", "root", "")
+    }
+}
+
+class NConnectionMaker : ConnectionMaker {
+    override fun makeConnection(): Connection {
+        return DriverManager.getConnection("jdbc:mysql://localhost:3307/spring", "root", "")
+    }
+}
+
+class UserDao() {
+    private val connectionMaker: ConnectionMaker = DConnectionMaker()
     fun add(user: User) {
-        getConnection()
+        connectionMaker.makeConnection()
             .use { conn ->
                 conn.prepareStatement("insert into user values(?, ?, ?)").use { stmt ->
                     stmt.setString(1, user.id)
@@ -18,7 +34,7 @@ abstract class UserDao {
     }
 
     fun get(id: String): User? {
-        getConnection()
+        connectionMaker.makeConnection()
             .use { conn ->
                 conn.prepareStatement("select * from user where id = ?").use { stmt ->
                     stmt.setString(1, id)
@@ -35,24 +51,10 @@ abstract class UserDao {
                 }
             }
     }
-
-    protected abstract fun getConnection(): Connection
-}
-
-class NUserDao : UserDao() {
-    override fun getConnection(): Connection {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/spring", "root", "")
-    }
-}
-
-class DUserDao : UserDao() {
-    override fun getConnection(): Connection {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3307/spring", "root", "")
-    }
 }
 
 fun main() {
-    val userDao = NUserDao()
+    val userDao = UserDao()
     val user = User("1234", "name", "password")
     userDao.add(user)
     val user2 = userDao.get("1234")
