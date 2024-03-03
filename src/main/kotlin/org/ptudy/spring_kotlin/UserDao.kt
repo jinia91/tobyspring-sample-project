@@ -1,10 +1,11 @@
 package org.ptudy.spring_kotlin
 
+import java.sql.Connection
 import java.sql.DriverManager
 
 class UserDao {
     fun add(user: User) {
-        DriverManager.getConnection("jdbc:mysql://localhost:3306/spring", "root", "")
+        getConnection()
             .use { conn ->
                 conn.prepareStatement("insert into user values(?, ?, ?)").use { stmt ->
                     stmt.setString(1, user.id)
@@ -16,7 +17,7 @@ class UserDao {
     }
 
     fun get(id: String): User? {
-        DriverManager.getConnection("jdbc:mysql://localhost:3306/spring", "root", "")
+        getConnection()
             .use { conn ->
                 conn.prepareStatement("select * from user where id = ?").use { stmt ->
                     stmt.setString(1, id)
@@ -33,6 +34,9 @@ class UserDao {
                 }
             }
     }
+
+    private fun getConnection(): Connection =
+        DriverManager.getConnection("jdbc:mysql://localhost:3306/spring", "root", "")
 }
 
 fun main() {
