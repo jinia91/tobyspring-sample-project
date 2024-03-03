@@ -1,27 +1,15 @@
-package org.ptudy.spring_kotlin
+package org.ptudy.spring_kotlin.src.application
 
-import java.sql.Connection
-import java.sql.DriverManager
+import org.ptudy.spring_kotlin.di_container.annotation.Autowired
+import org.ptudy.spring_kotlin.di_container.annotation.Component
 
-interface ConnectionMaker {
-    fun makeConnection(): Connection
-}
 
-class DConnectionMaker : ConnectionMaker {
-    override fun makeConnection(): Connection {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/spring", "root", "")
-    }
-}
+@Component
+class UserDao{
 
-class NConnectionMaker : ConnectionMaker {
-    override fun makeConnection(): Connection {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3307/spring", "root", "")
-    }
-}
+    @field:Autowired
+    lateinit var connectionMaker: ConnectionMaker
 
-class UserDao(
-    private val connectionMaker: ConnectionMaker,
-) {
     fun add(user: User) {
         connectionMaker.makeConnection()
             .use { conn ->
@@ -52,20 +40,4 @@ class UserDao(
                 }
             }
     }
-}
-
-class DUserDaoFactory {
-    fun userDao(): UserDao {
-        return UserDao(dConnectionMaker())
-    }
-
-    private fun dConnectionMaker() = DConnectionMaker()
-}
-
-fun main() {
-    val userDao = DUserDaoFactory().userDao()
-    val user = User("1234", "name", "password")
-    userDao.add(user)
-    val user2 = userDao.get("1234")
-    println(user2)
 }
