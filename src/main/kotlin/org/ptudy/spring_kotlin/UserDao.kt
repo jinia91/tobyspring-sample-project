@@ -20,7 +20,7 @@ class NConnectionMaker : ConnectionMaker {
 }
 
 class UserDao(
-    private val connectionMaker: ConnectionMaker
+    private val connectionMaker: ConnectionMaker,
 ) {
     fun add(user: User) {
         connectionMaker.makeConnection()
@@ -54,8 +54,16 @@ class UserDao(
     }
 }
 
+class DUserDaoFactory {
+    fun userDao(): UserDao {
+        return UserDao(dConnectionMaker())
+    }
+
+    private fun dConnectionMaker() = DConnectionMaker()
+}
+
 fun main() {
-    val userDao = UserDao(DConnectionMaker())
+    val userDao = DUserDaoFactory().userDao()
     val user = User("1234", "name", "password")
     userDao.add(user)
     val user2 = userDao.get("1234")
