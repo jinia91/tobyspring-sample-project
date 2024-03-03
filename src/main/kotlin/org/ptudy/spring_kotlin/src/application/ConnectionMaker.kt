@@ -8,7 +8,6 @@ interface ConnectionMaker {
     fun makeConnection(): Connection
 }
 
-@Component
 class DConnectionMaker : ConnectionMaker {
     override fun makeConnection(): Connection {
         return DriverManager.getConnection("jdbc:mysql://localhost:3306/spring", "root", "")
