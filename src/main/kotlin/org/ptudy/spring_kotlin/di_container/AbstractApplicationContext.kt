@@ -4,16 +4,17 @@ import org.ptudy.spring_kotlin.di_container.annotation.Autowired
 import org.ptudy.spring_kotlin.di_container.annotation.Component
 import java.lang.reflect.Constructor
 import java.lang.reflect.Field
+import org.ptudy.spring_kotlin.BeanFactory
 import org.ptudy.spring_kotlin.di_container.annotation.Bean
 import org.ptudy.spring_kotlin.di_container.annotation.Configuration
 
 
-abstract class DiContainer(
+abstract class AbstractApplicationContext(
     classes: Set<Class<*>>,
-) {
+) : BeanFactory {
     companion object {
         private val BEAN_ANNOTATIONS: Set<Class<out Annotation>> = setOf(Component::class.java)
-        private val Configuration_ANNOTATIONS: Set<Class<out Annotation>> = setOf(Configuration::class.java)
+        private val CONFIGURATION_ANNOTATIONS: Set<Class<out Annotation>> = setOf(Configuration::class.java)
         private val BEAN_BUILDER: Set<Class<out Annotation>> = setOf(Bean::class.java)
     }
 

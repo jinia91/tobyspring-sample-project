@@ -1,9 +1,9 @@
 package org.ptudy.spring_kotlin.di_container
 
-class ApplicationContext(
+class MyApplicationContext(
     classes : Set<Class<*>> = ClassPathScanner.getAllClassesInSrc("org.ptudy.spring_kotlin.src.application")
-) : DiContainer(classes) {
-    fun getBean(name: String) : Any? {
+) : AbstractApplicationContext(classes) {
+    override fun getBean(name: String) : Any? {
         return beans.find {
             it.javaClass.isAssignableFrom(Class.forName(name))
         }
