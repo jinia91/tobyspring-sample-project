@@ -2,8 +2,9 @@ package org.ptudy.spring_kotlin
 
 import java.sql.Connection
 import java.sql.DriverManager
+import java.sql.DriverManager.getConnection
 
-class UserDao {
+abstract class UserDao {
     fun add(user: User) {
         getConnection()
             .use { conn ->
@@ -35,12 +36,23 @@ class UserDao {
             }
     }
 
-    private fun getConnection(): Connection =
-        DriverManager.getConnection("jdbc:mysql://localhost:3306/spring", "root", "")
+    protected abstract fun getConnection(): Connection
+}
+
+class NUserDao : UserDao() {
+    override fun getConnection(): Connection {
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/spring", "root", "")
+    }
+}
+
+class DUserDao : UserDao() {
+    override fun getConnection(): Connection {
+        return DriverManager.getConnection("jdbc:mysql://localhost:3307/spring", "root", "")
+    }
 }
 
 fun main() {
-    val userDao = UserDao()
+    val userDao = NUserDao()
     val user = User("1234", "name", "password")
     userDao.add(user)
     val user2 = userDao.get("1234")
