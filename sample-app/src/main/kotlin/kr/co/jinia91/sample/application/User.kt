@@ -1,4 +1,4 @@
-package org.ptudy.spring_kotlin
+package kr.co.jinia91.sample.application
 
 data class User(
     val id: String,

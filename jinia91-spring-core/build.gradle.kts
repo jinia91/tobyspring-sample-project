@@ -10,9 +10,9 @@ repositories {
 }
 
 dependencies {
-    implementation("mysql:mysql-connector-java:8.0.33")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.reflections:reflections:0.10.2")
+
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 }
 
