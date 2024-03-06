@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm") version "1.9.22"
 }
 
-group = "com.cdc"
+group = "org.ptudy.spring-kotlin"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -10,6 +10,7 @@ repositories {
 }
 
 dependencies {
+    implementation("mysql:mysql-connector-java:8.0.33")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 }
 
