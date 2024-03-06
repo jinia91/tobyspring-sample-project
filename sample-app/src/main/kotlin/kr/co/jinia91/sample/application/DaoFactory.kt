@@ -1,7 +1,7 @@
 package kr.co.jinia91.sample.application
 
-import co.kr.jinia91.springframework.core.annotation.Bean
-import co.kr.jinia91.springframework.core.annotation.Configuration
+import kr.co.jinia91.springframework.core.annotation.Bean
+import kr.co.jinia91.springframework.core.annotation.Configuration
 
 @Configuration
 class DaoFactory {

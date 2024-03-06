@@ -12,6 +12,7 @@ repositories {
 dependencies {
     implementation("mysql:mysql-connector-java:8.0.33")
     implementation(project(":jinia91-spring-core"))
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
 }
 
 tasks.test {

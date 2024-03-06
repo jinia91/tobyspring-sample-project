@@ -1,11 +1,16 @@
 package kr.co.jinia91.sample
 
-import org.ptudy.spring_kotlin.di_container.MyApplicationContext
+import kr.co.jinia91.springframework.core.SimpleApplicationContext
 import kr.co.jinia91.sample.application.User
 import kr.co.jinia91.sample.application.UserDao
+import kr.co.jinia91.springframework.core.SpringBootApplication
+import kr.co.jinia91.springframework.core.annotation.SpringApplication
+
+@SpringApplication
+class SampleApp
 
 fun main() {
-    val context : MyApplicationContext = MyApplicationContext()
+    val context = SpringBootApplication.run()
 
     // for test
     val userDao = context.getBean(UserDao::class.java.name) as UserDao
