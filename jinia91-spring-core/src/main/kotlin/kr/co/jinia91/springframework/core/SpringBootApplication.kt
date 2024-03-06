@@ -18,5 +18,4 @@ object SpringBootApplication {
         }
         return SimpleApplicationContext(ClassPathScanner.getAllClassesInSrc(springApplication.packageName))
     }
-
 }
