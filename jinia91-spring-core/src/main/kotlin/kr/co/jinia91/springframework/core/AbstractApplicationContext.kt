@@ -1,9 +1,9 @@
-package co.kr.jinia91.springframework.core
+package kr.co.jinia91.springframework.core
 
-import co.kr.jinia91.springframework.core.annotation.Autowired
-import co.kr.jinia91.springframework.core.annotation.Bean
-import co.kr.jinia91.springframework.core.annotation.Component
-import co.kr.jinia91.springframework.core.annotation.Configuration
+import kr.co.jinia91.springframework.core.annotation.Autowired
+import kr.co.jinia91.springframework.core.annotation.Bean
+import kr.co.jinia91.springframework.core.annotation.Component
+import kr.co.jinia91.springframework.core.annotation.Configuration
 import java.lang.reflect.Constructor
 import java.lang.reflect.Field
 

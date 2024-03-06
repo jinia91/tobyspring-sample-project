@@ -1,7 +1,7 @@
 package kr.co.jinia91.sample.application
 
-import co.kr.jinia91.springframework.core.annotation.Autowired
-import co.kr.jinia91.springframework.core.annotation.Component
+import kr.co.jinia91.springframework.core.annotation.Autowired
+import kr.co.jinia91.springframework.core.annotation.Component
 
 
 @Component
