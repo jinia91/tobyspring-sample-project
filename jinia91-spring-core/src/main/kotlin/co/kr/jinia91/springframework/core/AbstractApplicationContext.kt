@@ -1,12 +1,11 @@
-package org.ptudy.spring_kotlin.di_container
+package co.kr.jinia91.springframework.core
 
-import org.ptudy.spring_kotlin.di_container.annotation.Autowired
-import org.ptudy.spring_kotlin.di_container.annotation.Component
+import co.kr.jinia91.springframework.core.annotation.Autowired
+import co.kr.jinia91.springframework.core.annotation.Bean
+import co.kr.jinia91.springframework.core.annotation.Component
+import co.kr.jinia91.springframework.core.annotation.Configuration
 import java.lang.reflect.Constructor
 import java.lang.reflect.Field
-import org.ptudy.spring_kotlin.BeanFactory
-import org.ptudy.spring_kotlin.di_container.annotation.Bean
-import org.ptudy.spring_kotlin.di_container.annotation.Configuration
 
 
 abstract class AbstractApplicationContext(

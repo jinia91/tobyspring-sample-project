@@ -1,4 +1,4 @@
-package org.ptudy.spring_kotlin.di_container
+package co.kr.jinia91.springframework.core
 
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners

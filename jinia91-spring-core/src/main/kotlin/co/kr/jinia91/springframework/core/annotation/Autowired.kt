@@ -1,4 +1,4 @@
-package org.ptudy.spring_kotlin.di_container.annotation
+package co.kr.jinia91.springframework.core.annotation
 
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Autowired()

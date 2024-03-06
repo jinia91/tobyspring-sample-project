@@ -1,8 +1,7 @@
-package org.ptudy.spring_kotlin.src.application
+package kr.co.jinia91.sample.application
 
 import java.sql.Connection
 import java.sql.DriverManager
-import org.ptudy.spring_kotlin.di_container.annotation.Component
 
 interface ConnectionMaker {
     fun makeConnection(): Connection

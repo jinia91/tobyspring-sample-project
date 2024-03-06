@@ -1,7 +1,7 @@
-package org.ptudy.spring_kotlin.src.application
+package kr.co.jinia91.sample.application
 
-import org.ptudy.spring_kotlin.di_container.annotation.Autowired
-import org.ptudy.spring_kotlin.di_container.annotation.Component
+import co.kr.jinia91.springframework.core.annotation.Autowired
+import co.kr.jinia91.springframework.core.annotation.Component
 
 
 @Component
