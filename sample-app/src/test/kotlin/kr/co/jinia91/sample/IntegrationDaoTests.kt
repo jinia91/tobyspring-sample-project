@@ -1,5 +1,9 @@
 package kr.co.jinia91.sample
 
+import com.navercorp.fixturemonkey.FixtureMonkey
+import com.navercorp.fixturemonkey.jakarta.validation.plugin.JakartaValidationPlugin
+import com.navercorp.fixturemonkey.kotlin.KotlinPlugin
+import com.navercorp.fixturemonkey.kotlin.giveMeOne
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -7,6 +11,7 @@ import kr.co.jinia91.sample.SingletonSpringBootTest.context
 import kr.co.jinia91.sample.application.User
 import kr.co.jinia91.sample.application.UserDao
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.RepeatedTest
 import kotlin.test.Test
 
 class IntegrationDaoTests {
@@ -47,19 +52,16 @@ class IntegrationDaoTests {
         userCount shouldBe 1
     }
 
-    @Test
-    fun `유저 여러명을 추가하면 정상 저장된다`() {
+    @RepeatedTest(10)
+    fun `유저 여러명을 추가하면 정상 저장된다 - fixtures 사용`() {
         // given
-        val user1 = User(
-            id = "1111",
-            name = "jinia",
-            password = "1234"
-        )
-        val user2 = User(
-            id = "2222",
-            name = "jinia2",
-            password = "1234"
-        )
+        val monkey = FixtureMonkey.builder()
+            .plugin(KotlinPlugin())
+            .plugin(JakartaValidationPlugin())
+            .build()
+
+        val user1 = monkey.giveMeOne<User>()
+        val user2 = monkey.giveMeOne<User>()
 
         // when
         sut.add(user1)
