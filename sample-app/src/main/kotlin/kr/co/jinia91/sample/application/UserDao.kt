@@ -40,4 +40,13 @@ class UserDao{
                 }
             }
     }
+
+    fun deleteAll() {
+        connectionMaker.makeConnection()
+            .use { conn ->
+                conn.prepareStatement("delete from user").use { stmt ->
+                    stmt.executeUpdate()
+                }
+            }
+    }
 }
