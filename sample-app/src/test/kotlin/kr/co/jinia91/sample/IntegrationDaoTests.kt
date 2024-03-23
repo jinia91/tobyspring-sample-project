@@ -7,6 +7,7 @@ import com.navercorp.fixturemonkey.kotlin.giveMeOne
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import kr.co.jinia91.sample.SingletonSpringBootTest.context
 import kr.co.jinia91.sample.application.User
 import kr.co.jinia91.sample.application.UserDao
 import org.junit.jupiter.api.BeforeEach
@@ -71,7 +72,6 @@ class IntegrationDaoTests {
             log.error { e }
             throw e
         }
-
 
         // when
         sut.add(user1)
