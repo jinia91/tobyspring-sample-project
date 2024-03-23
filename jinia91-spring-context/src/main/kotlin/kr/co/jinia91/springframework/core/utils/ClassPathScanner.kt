@@ -16,7 +16,7 @@ object ClassPathScanner {
         return reflections.getSubTypesOf(Any::class.java)
     }
     fun getAllClassesInSrc(packages: Array<String>) = packages.map {
-        ClassPathScanner.getAllClassesInSrc(it)
+        this.getAllClassesInSrc(it)
     }.flatten().toSet()
 
     fun findSpringApplication(): Class<*>? {

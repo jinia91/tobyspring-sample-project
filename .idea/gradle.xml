@@ -9,12 +9,17 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+<<<<<<< HEAD
+            <option value="$PROJECT_DIR$/jinia91-spring-core" />
+            <option value="$PROJECT_DIR$/sample-app" />
+=======
 <<<<<<< Updated upstream
 =======
             <option value="$PROJECT_DIR$/jinia91-spring-context" />
             <option value="$PROJECT_DIR$/jinia91-spring-jdbc" />
             <option value="$PROJECT_DIR$/sample-app" />
 >>>>>>> Stashed changes
+>>>>>>> main
           </set>
         </option>
       </GradleProjectSettings>
