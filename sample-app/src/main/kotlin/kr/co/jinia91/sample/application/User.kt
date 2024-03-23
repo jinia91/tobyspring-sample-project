@@ -1,12 +1,5 @@
 package kr.co.jinia91.sample.application
 
-<<<<<<< Updated upstream
-data class User(
-    val id: String,
-    var name: String,
-    var password: String
-)
-=======
 import jakarta.validation.ConstraintViolation
 import jakarta.validation.Validation
 import jakarta.validation.Validator
@@ -50,4 +43,3 @@ class DomainInvariantViolationException(
             "프로퍼티 : ${it.propertyPath}, 시도한 값 : ${it.invalidValue}, 에러메시지 : ${it.message}\n"
         }
 }
->>>>>>> Stashed changes
