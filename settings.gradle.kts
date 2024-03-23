@@ -5,5 +5,6 @@ rootProject.name = "spring_study"
 
 include(
     "jinia91-spring-context",
-    "sample-app"
+    "sample-app",
+    "spring-sample-app"
 )

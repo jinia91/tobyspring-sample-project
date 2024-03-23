@@ -1,0 +1,6 @@
+server:
+  port: 13412
+
+spring:
+  config:
+    import: classpath:sql-mapping.yml
