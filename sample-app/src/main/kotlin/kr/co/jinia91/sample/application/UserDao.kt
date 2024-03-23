@@ -28,6 +28,7 @@ class UserDao{
                 conn.prepareStatement("select * from user where id = ?").use { stmt ->
                     stmt.setString(1, id)
                     val rs = stmt.executeQuery()
+<<<<<<< Updated upstream
                     if (rs.next()) {
                         return User(
                             id = rs.getString("id"),
@@ -36,6 +37,19 @@ class UserDao{
                         )
                     } else {
                         return null
+=======
+                    rs.use {
+                        if (rs.next()) {
+                            return User(
+                                id = rs.getString("id"),
+                                name = rs.getString("name"),
+                                password = rs.getString("password")
+                            )
+                        } else {
+                            throw IllegalArgumentException("존재하지 않는 유저입니다.")
+                        }
+
+>>>>>>> Stashed changes
                     }
                 }
             }
