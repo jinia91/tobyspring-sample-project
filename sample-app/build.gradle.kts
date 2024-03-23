@@ -11,9 +11,12 @@ repositories {
 
 dependencies {
     implementation("mysql:mysql-connector-java:8.0.33")
-    implementation(project(":jinia91-spring-core"))
+    implementation(project(":jinia91-spring-context"))
     // jakarta validation
-    implementation("org.hibernate.validator:hibernate-validator:7.0.2.Final")
+    implementation("org.hibernate.validator:hibernate-validator:7.0.1.Final")
+    implementation("org.glassfish:jakarta.el:3.0.3")
+    implementation("ch.qos.logback:logback-classic:1.4.14")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("io.kotest:kotest-assertions-core:5.8.0")

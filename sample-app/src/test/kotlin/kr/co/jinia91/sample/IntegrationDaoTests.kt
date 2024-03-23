@@ -14,6 +14,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.RepeatedTest
 import kotlin.test.Test
 
+private val log = mu.KotlinLogging.logger {}
+
 class IntegrationDaoTests {
 
     private val sut = context.getBean(UserDao::class.java.name) as UserDao
@@ -37,7 +39,7 @@ class IntegrationDaoTests {
         val user = User(
             id = "1111",
             name = "jinia",
-            password = "1234"
+            password = "123456"
         )
 
         // when
@@ -46,7 +48,7 @@ class IntegrationDaoTests {
         // then - 상태검증
         foundUser.shouldNotBeNull()
         foundUser.name shouldBe "jinia"
-        foundUser.password shouldBe "1234"
+        foundUser.password shouldBe "123456"
 
         val userCount = sut.getCount()
         userCount shouldBe 1
@@ -60,8 +62,16 @@ class IntegrationDaoTests {
             .plugin(JakartaValidationPlugin())
             .build()
 
-        val user1 = monkey.giveMeOne<User>()
-        val user2 = monkey.giveMeOne<User>()
+        var user1: User
+        var user2: User
+
+        try {
+            user1 = monkey.giveMeOne<User>()
+            user2 = monkey.giveMeOne<User>()
+        } catch (e: Exception) {
+            log.error { e }
+            throw e
+        }
 
         // when
         sut.add(user1)

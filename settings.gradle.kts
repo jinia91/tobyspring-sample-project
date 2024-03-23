@@ -4,6 +4,6 @@ plugins {
 rootProject.name = "spring_study"
 
 include(
-    "jinia91-spring-core",
+    "jinia91-spring-context",
     "sample-app"
 )
