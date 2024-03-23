@@ -1,0 +1,6 @@
+sql:
+  user:
+    select: "select * from user where id = ?"
+    insert: "insert into user values(?, ?, ?)"
+    deleteAll: "DELETE FROM user"
+    count: "select count(*) from user"
