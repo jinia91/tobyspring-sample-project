@@ -11,8 +11,13 @@ import java.io.FileReader
  *
  * 두가지를 고려한 계산기
  *
+ * Sum 과 Multiply 두가지 기능을 제공한다.
+ * 두가지 로직간에는 중복코드가 상당히 존재한다.
+ *
+ * - 변경할 부분과 고정된 부분을 나눠보자
+ *
  */
-class CalculatorStep1 {
+class CalculatorStep1Duplicated {
     fun sum(path: String): Int {
         var br: BufferedReader? = null
         try {
