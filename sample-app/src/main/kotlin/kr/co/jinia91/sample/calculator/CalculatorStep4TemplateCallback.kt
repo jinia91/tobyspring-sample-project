@@ -8,7 +8,7 @@ import java.io.FileReader
  *
  * @constructor Create empty Calculator3
  */
-class CalculatorStep3 {
+class CalculatorStep4TemplateCallback {
     fun sum(path: String): Int {
         return doCalculatorCommonTemplate(path, { line, sum -> sum + line.toInt() }, 0)
     }
@@ -17,7 +17,7 @@ class CalculatorStep3 {
         return doCalculatorCommonTemplate(path, { line, sum -> sum * line.toInt() }, 1)
     }
 
-    private fun <T> doCalculatorCommonTemplate(
+    fun <T> doCalculatorCommonTemplate(
         path: String,
         callBack: (String, T) -> T,
         result: T
