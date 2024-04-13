@@ -96,6 +96,21 @@ class UserServiceTests {
             }
         }
 
+        @Test
+        fun `이름이 1자 미만이면 가입에 실패한다`() {
+            // given
+            val invalidCommand = SignUpUserCommand(
+                id = "jinia91",
+                name = "",
+                password = "1q2w3e4r1!",
+            )
+
+            // when, then
+            shouldThrow<InvalidUserName> {
+                sut.signUp(invalidCommand)
+            }
+        }
+
         /**
          * 비밀번호 검증 테스트 케이스
          *
