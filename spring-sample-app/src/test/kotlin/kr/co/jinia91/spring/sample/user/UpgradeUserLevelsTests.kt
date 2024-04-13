@@ -186,12 +186,7 @@ class UpgradeUserLevelsTests {
         EVENT_STATUS = EventStatus.EVENT
 
         withClue("이벤트 기간동안 로그인 5회를 한 BASIC 신규 유저가 존재한다") {
-            val userWith5LogInCount = User.newOne(
-                id = "11112",
-                name = "jinia",
-                password = "1Q2w3e4r1!",
-                email = null
-            ).apply {
+            val userWith5LogInCount = validUser().apply {
                 logInCount = UserLevelUpgradeEventPolicy.MIN_LOG_COUNT_FOR_SILVER
             }
             userRepository.save(userWith5LogInCount)
@@ -201,7 +196,7 @@ class UpgradeUserLevelsTests {
         sut.upgradeUserLevels()
 
         // then
-        val user = userRepository.findById("11112")
+        val user = userRepository.findById("jinia91")
         user.shouldNotBeNull()
         user.level shouldBe User.Level.SILVER
 
@@ -212,28 +207,30 @@ class UpgradeUserLevelsTests {
     @Test
     fun `메일을 가진 유저한테는 업그레이드시 메일을 보낸다`() {
         // given
-        withClue("이벤트 기간동안 로그인 50회를 한 메일을 가진 BASIC 신규 유저가 존재한다") {
-            val userWith50LogInCount = User.newOne("1", "jinia1", "1Q2w3e4r1!", email = "abc@program.co.kr").apply {
-                logInCount = MIN_LOG_COUNT_FOR_SILVER
-                level = User.Level.BASIC
-            }
-
-            val userWith50LogInCountWithoutMail = User.newOne("2", "jinia2", "1Q2w3e4r1!", email = null).apply {
-                logInCount = MIN_LOG_COUNT_FOR_SILVER
-                level = User.Level.BASIC
-            }
-
-            val nonUpgradeUser = User.newOne("3", "jinia3", "1Q2w3e4r1!", email = null)
-
-            userRepository.save(userWith50LogInCount)
-            userRepository.save(userWith50LogInCountWithoutMail)
-            userRepository.save(nonUpgradeUser)
-        }
+        withClue("이벤트 기간동안 여러 패턴의 유저들이 주어진다") { givenUserSet() }
 
         // when
         sut.upgradeUserLevels()
 
         // then
         verify(exactly = 1) { reminder.sendTOUpgradedUser(any()) }
+    }
+
+    private fun givenUserSet(): User {
+        val userWith50LogInCount = User.newOne("1", "jinia1", "1Q2w3e4r1!", email = "abc@program.co.kr").apply {
+            logInCount = MIN_LOG_COUNT_FOR_SILVER
+            level = User.Level.BASIC
+        }
+
+        val userWith50LogInCountWithoutMail = User.newOne("2", "jinia2", "1Q2w3e4r1!", email = null).apply {
+            logInCount = MIN_LOG_COUNT_FOR_SILVER
+            level = User.Level.BASIC
+        }
+
+        val nonUpgradeUser = User.newOne("3", "jinia3", "1Q2w3e4r1!", email = null)
+
+        userRepository.save(userWith50LogInCount)
+        userRepository.save(userWith50LogInCountWithoutMail)
+        return userRepository.save(nonUpgradeUser)
     }
 }
