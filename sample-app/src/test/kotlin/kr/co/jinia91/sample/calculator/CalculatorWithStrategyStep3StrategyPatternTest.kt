@@ -11,7 +11,7 @@ import kotlin.test.Test
 class CalculatorWithStrategyStep3StrategyPatternTest{
     private val sut = CalculatorWithStrategy(
         listOf(
-            PlusStrategy(), MultiplyStrategy()
+            PlusStrategy, MultiplyStrategy
         )
     )
 

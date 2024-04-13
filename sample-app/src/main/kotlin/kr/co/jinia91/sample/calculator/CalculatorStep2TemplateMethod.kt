@@ -10,7 +10,7 @@ import java.io.FileReader
  *
  * - 하위 클레스가 슈퍼 클래스의 모든 메서드를 알고 있어야하고, 강결합 문제
  */
-abstract class CalculatorTemplate {
+sealed class CalculatorTemplate {
     abstract val initialValue: Int
 
     fun calculate(path: String): Int {
