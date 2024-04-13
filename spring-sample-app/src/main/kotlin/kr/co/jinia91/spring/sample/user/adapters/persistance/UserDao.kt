@@ -16,16 +16,16 @@ class UserDao(
 ) {
     fun addAndGet(user: User): User {
         add(user)
-        return get(user.id)
+        return get(user.id) ?: throw IllegalStateException("User not persist")
     }
 
     fun add(user: User) {
         jdbcTemplate.update(userDaoSqlDefinition.insert, user.id, user.name, user.password, user.level.toString())
     }
 
-    fun get(id: String): User {
+    fun get(id: String): User? {
         return jdbcTemplate.query(userDaoSqlDefinition.select, userMapper, id)
-            .firstOrNull() ?: throw IllegalArgumentException("User not found")
+            .firstOrNull()
     }
 
     fun deleteAll() {

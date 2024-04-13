@@ -14,4 +14,8 @@ class UserFakeRepository : UserRepository {
     override fun deleteAll() {
         users.clear()
     }
+
+    override fun findById(id: String): User? {
+        return users[id]
+    }
 }

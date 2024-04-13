@@ -1,6 +1,5 @@
 package kr.co.jinia91.spring.sample.user.persistance
 
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import kr.co.jinia91.spring.sample.user.User
@@ -13,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 class UserDaoTests {
     @Autowired
-    private lateinit var sut : UserDao
+    private lateinit var sut: UserDao
 
     @BeforeEach
     fun setUp() {
@@ -53,10 +52,11 @@ class UserDaoTests {
 
 
     @Test
-    fun `없는 유저를 조회하면 예외가 발생한다`() {
-        // when, then
-        shouldThrow<IllegalArgumentException> {
-            sut.get("1111")
-        }
+    fun `없는 유저를 조회하면 null이 된다`() {
+        // when
+        val optionalUser = sut.get("1111")
+
+        // then
+        optionalUser shouldBe null
     }
 }

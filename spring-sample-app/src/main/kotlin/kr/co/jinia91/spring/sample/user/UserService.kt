@@ -7,6 +7,7 @@ class UserService(
     private val userRepository: UserRepository
 ) {
     fun signUp(command: SignUpUserCommand): SignUpUserInfo {
+        command.validate()
         val user = command.toNewUser()
         userRepository.save(user)
         return SignUpUserInfo(
@@ -16,6 +17,12 @@ class UserService(
             level = user.level
         )
     }
+    private fun SignUpUserCommand.validate() {
+        if (userRepository.findById(id) != null) {
+            throw AlreadyUserIdExist()
+        }
+    }
+
     private fun SignUpUserCommand.toNewUser(): User {
         return User(
             id = id,

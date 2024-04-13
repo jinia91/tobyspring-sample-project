@@ -15,4 +15,8 @@ class UserRepositoryAdapter(
     override fun deleteAll() {
         userDao.deleteAll()
     }
+
+    override fun findById(id: String): User? {
+        return userDao.get(id)
+    }
 }
