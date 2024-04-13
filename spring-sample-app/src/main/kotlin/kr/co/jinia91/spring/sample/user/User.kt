@@ -14,7 +14,7 @@ data class User constructor(
 
     companion object {
         fun newOne(id: String, name: String, password: String): User {
-            require(name.length < 10) { throw InvalidUserName()}
+            require(name.length in 1..10) { throw InvalidUserName() }
             return User(
                 id = id,
                 name = name,

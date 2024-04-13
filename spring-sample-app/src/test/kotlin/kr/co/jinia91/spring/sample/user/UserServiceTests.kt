@@ -24,7 +24,7 @@ class UserServiceTests {
      *
      *   x 아이디가 중복되면 안된다
      *
-     *   x 이름이 10자 이상이면 안된다
+     *   x 이름이 1~10자 사이여야 한다
      *
      *   x 비밀번호가 8자 미만, 16자 초과이면 안된다
      *
@@ -82,11 +82,11 @@ class UserServiceTests {
         }
 
         @Test
-        fun `이름이 10자 이상이면 가입에 실패한다`() {
+        fun `이름이 11자 이상이면 가입에 실패한다`() {
             // given
             val invalidCommand = SignUpUserCommand(
                 id = "jinia91",
-                name = "jiniajiniajinia",
+                name = "12345678901",
                 password = "1q2w3e4r1!",
             )
 
