@@ -1,18 +1,12 @@
 package kr.co.jinia91.spring.sample.user.application
 
-import javax.sql.DataSource
 import kr.co.jinia91.spring.sample.user.domain.AlreadyUserIdExist
 import kr.co.jinia91.spring.sample.user.domain.EVENT_STATUS
 import kr.co.jinia91.spring.sample.user.domain.User
 import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradePolicy
 import kr.co.jinia91.spring.sample.user.domain.UserRepository
-import org.springframework.jdbc.datasource.DataSourceTransactionManager
-import org.springframework.jdbc.datasource.DataSourceUtils
 import org.springframework.stereotype.Service
-import org.springframework.transaction.PlatformTransactionManager
-import org.springframework.transaction.TransactionManager
-import org.springframework.transaction.support.DefaultTransactionDefinition
-import org.springframework.transaction.support.TransactionSynchronizationManager
+import org.springframework.transaction.annotation.Transactional
 
 interface UserUserCases {
     fun signUp(command: SignUpUserCommand): SignUpUserInfo
@@ -23,8 +17,6 @@ interface UserUserCases {
 open class UserServiceImpl(
     private val userRepository: UserRepository,
     private val userLevelUpgradePolicy: List<UserLevelUpgradePolicy>,
-    private val dataSource: DataSource,
-    private val transactionManager: PlatformTransactionManager
 ) : UserUserCases {
     override fun signUp(command: SignUpUserCommand): SignUpUserInfo {
         command.validate()
@@ -52,6 +44,7 @@ open class UserServiceImpl(
         )
     }
 
+    @Transactional
     override fun upgradeUserLevels(): UpgradeUserLevelsInfo {
         val policy = userLevelUpgradePolicy.find {
             EVENT_STATUS == it.supportingEventStatus
@@ -61,14 +54,7 @@ open class UserServiceImpl(
             .sortedBy { it.id }
             .filter { policy.canUpgradeLevel(it) }
 
-        val status = transactionManager.getTransaction(DefaultTransactionDefinition())
-        try {
-            targetUsers.forEach { upgradeUserLevel(it, policy) }
-            transactionManager.commit(status)
-        } catch (e: Exception) {
-            transactionManager.rollback(status)
-            throw e
-        }
+        targetUsers.forEach { upgradeUserLevel(it, policy) }
         return buildInfo(targetUsers)
     }
 

@@ -27,16 +27,10 @@ class TransactionTestConfig {
     @Autowired
     lateinit var userLevelUpgradePolicy: List<UserLevelUpgradePolicy>
 
-    @Autowired
-    lateinit var dataSource: DataSource
-
-    @Autowired
-    lateinit var transactionManager: PlatformTransactionManager
-
     @Bean
     @Primary
     fun userService(): UserUserCases {
-        return UserFakeService(userRepository, userLevelUpgradePolicy, dataSource, transactionManager)
+        return UserFakeService(userRepository, userLevelUpgradePolicy)
     }
 }
 

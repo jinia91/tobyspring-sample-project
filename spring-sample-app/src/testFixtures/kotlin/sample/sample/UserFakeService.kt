@@ -10,9 +10,7 @@ import org.springframework.transaction.PlatformTransactionManager
 class UserFakeService(
     userRepository: UserRepository,
     userLevelUpgradePolicy: List<UserLevelUpgradePolicy>,
-    dataSource: DataSource,
-    transactionManager: PlatformTransactionManager
-): UserServiceImpl(userRepository, userLevelUpgradePolicy, dataSource, transactionManager) {
+): UserServiceImpl(userRepository, userLevelUpgradePolicy) {
     private lateinit var exId: String
 
     fun setExId(id: String) {
