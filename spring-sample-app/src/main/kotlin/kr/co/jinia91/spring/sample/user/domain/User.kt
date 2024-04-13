@@ -30,7 +30,7 @@ data class User constructor(
 
     private fun validateInvariants() {
         require(name.length in 1..10) { throw InvalidUserName() }
-        require(password.matches(Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,16}\$"))) { throw InvalidPassword() }
+        require(password.matches(PASSWORD_REGEX)) { throw InvalidPassword() }
     }
 
     fun tryUpgradeLevel(policy: UserLevelUpgradePolicy) {
@@ -41,6 +41,7 @@ data class User constructor(
     }
 
     companion object {
+        private val PASSWORD_REGEX = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,16}\$")
         fun newOne(id: String, name: String, password: String, email: String?): User {
             return User(
                 id = id,
