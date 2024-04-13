@@ -1,5 +1,6 @@
 package kr.co.jinia91.spring.sample
 
+import kr.co.jinia91.spring.sample.user.User
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Component

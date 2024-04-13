@@ -1,8 +1,12 @@
-package kr.co.jinia91.spring.sample
+package kr.co.jinia91.spring.sample.user
 
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
 
+@SpringBootTest
 class UserServiceTests {
     /**
      * 사용자 가입 유즈케이스 명세 정리
@@ -22,8 +26,26 @@ class UserServiceTests {
      */
     @Nested
     inner class `사용자 가입 유즈케이스 테스트`{
+        @Autowired
+        private lateinit var sut: UserService
         @Test
-        fun `유효한 사용자 정보가 주어지면 사용자는 정상적으로 가입되고 BASIC 레벨이다`(){}
+        fun `유효한 사용자 정보가 주어지면 사용자는 정상적으로 가입되고 BASIC 레벨이다`(){
+            // given
+            val command = SignUpUserCommand(
+                id = "jinia91",
+                name = "jinia",
+                password = "1q2w3e4r1!",
+            )
+
+            // when
+            val user : User = sut.signUp(command)
+
+            // then
+            user.id shouldBe command.id
+            user.name shouldBe command.name
+            user.password shouldBe command.password
+            user.level shouldBe UserLevel.BASIC
+        }
         @Test
         fun `아이디가 중복되면 가입에 실패한다`(){}
         @Test
