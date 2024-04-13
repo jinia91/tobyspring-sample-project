@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import sample.sample.validSignUpUserCommand
+import sample.sample.validUser
 
 /**
  * 사용자 레벨 관리 유즈케이스
@@ -29,7 +30,7 @@ class UpgradeUserLevelsTests {
     @Test
     fun `BASIC 사용자는 50회 이상 로그인을 하면 SILVER 레벨로 업그레이드 된다`() {
         // given
-        withClue("BASIC 신규 유저가 존재한다") {
+        withClue("로그인 50회를 한 BASIC 신규 유저가 존재한다") {
             val userWith50LogInCount = User.newOne(
                 id = "11112",
                 name = "jinia",
@@ -51,6 +52,19 @@ class UpgradeUserLevelsTests {
 
     @Test
     fun `BASIC 사용자가 아니면 50 이상 로그인해도 SILVER 레벨로 업그레이드 되지 않는다`() {
+        // given
+        withClue("BASIC 신규 유저가 존재한다") {
+            val noneUpgradeTargetUser = validUser
+            userRepository.save(noneUpgradeTargetUser)
+        }
+
+        // when
+        sut.upgradeUserLevels()
+
+        // then
+        val user = userRepository.findById("jinia91")
+        user.shouldNotBeNull()
+        user.level shouldBe User.Level.BASIC
     }
 
     @Test
