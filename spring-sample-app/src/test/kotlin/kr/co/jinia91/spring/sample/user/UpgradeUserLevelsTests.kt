@@ -9,6 +9,7 @@ import kr.co.jinia91.spring.sample.user.domain.UserRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
@@ -95,5 +96,71 @@ class UpgradeUserLevelsTests {
 
     @Test
     fun `30회 이상 게시글을 작성하더라도 SILVER 레벨이 아니면 GOLD 레벨로 업그레이드 되지 않는다`() {
+        // given
+        withClue("게시글 30회를 작성한 BASIC 유저가 존재한다") {
+            val noneUpgradeTargetUser = validUser().apply {
+                logInCount = 50
+                postCount = 30
+            }
+            userRepository.save(noneUpgradeTargetUser)
+        }
+
+        // when
+        sut.upgradeUserLevels()
+
+        // then
+        val user = userRepository.findById("jinia91")
+        user.shouldNotBeNull()
+        user.level shouldBe User.Level.SILVER
     }
+
+    @Test
+    fun `주어진 데이터 셋트 중 업그레이드 대상을 적절히 업그레이드한다`() {
+        val list = withClue("5가지 데이터셋 준비") { build5Users() }
+        list.forEach { userRepository.save(it) }
+
+        // when
+        val result = sut.upgradeUserLevels()
+
+        // then
+        withClue("업그레이드 대상은 2명이다") {
+            result.upgradedLists.map { it.userId }
+        }
+        withClue("2번은 SILVER로 업그레이드 되어야 한다") {
+            val expectedSilver = result.upgradedLists.find { it.userId == "2" }
+            expectedSilver.shouldNotBeNull()
+            expectedSilver.level shouldBe User.Level.SILVER
+        }
+        withClue("4번은 GOLD로 업그레이드 되어야 한다") {
+            val expectedGold = result.upgradedLists.find { it.userId == "4" }
+            expectedGold.shouldNotBeNull()
+            expectedGold.level shouldBe User.Level.GOLD
+        }
+    }
+
+    private fun build5Users() = listOf(
+        User.newOne("1", "jinia1", "1Q2w3e4r1!").apply {
+            level = User.Level.BASIC
+            logInCount = 49
+        },
+        User.newOne("2", "jinia2", "1Q2w3e4r1!").apply {
+            level = User.Level.BASIC
+            logInCount = 50
+        },
+        User.newOne("3", "jinia3", "1Q2w3e4r1!").apply {
+            level = User.Level.SILVER
+            logInCount = 60
+            postCount = 29
+        },
+        User.newOne("4", "jinia4", "1Q2w3e4r1!").apply {
+            level = User.Level.SILVER
+            logInCount = 60
+            postCount = 30
+        },
+        User.newOne("5", "jinia5", "1Q2w3e4r1!").apply {
+            level = User.Level.GOLD
+            logInCount = 100
+            postCount = 100
+        },
+    )
 }
