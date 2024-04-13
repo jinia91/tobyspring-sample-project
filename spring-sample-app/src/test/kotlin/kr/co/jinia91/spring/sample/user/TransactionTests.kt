@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Primary
+import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.annotation.Transactional
 import sample.sample.UserFakeService
 
@@ -29,10 +30,13 @@ class TransactionTestConfig {
     @Autowired
     lateinit var dataSource: DataSource
 
+    @Autowired
+    lateinit var transactionManager: PlatformTransactionManager
+
     @Bean
     @Primary
     fun userService(): UserUserCases {
-        return UserFakeService(userRepository, userLevelUpgradePolicy, dataSource)
+        return UserFakeService(userRepository, userLevelUpgradePolicy, dataSource, transactionManager)
     }
 }
 

@@ -5,12 +5,14 @@ import kr.co.jinia91.spring.sample.user.application.UserServiceImpl
 import kr.co.jinia91.spring.sample.user.domain.User
 import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradePolicy
 import kr.co.jinia91.spring.sample.user.domain.UserRepository
+import org.springframework.transaction.PlatformTransactionManager
 
 class UserFakeService(
     userRepository: UserRepository,
     userLevelUpgradePolicy: List<UserLevelUpgradePolicy>,
-    dataSource: DataSource
-): UserServiceImpl(userRepository, userLevelUpgradePolicy, dataSource) {
+    dataSource: DataSource,
+    transactionManager: PlatformTransactionManager
+): UserServiceImpl(userRepository, userLevelUpgradePolicy, dataSource, transactionManager) {
     private lateinit var exId: String
 
     fun setExId(id: String) {

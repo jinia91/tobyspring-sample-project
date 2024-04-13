@@ -9,6 +9,8 @@ import kr.co.jinia91.spring.sample.user.domain.UserRepository
 import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.jdbc.datasource.DataSourceUtils
 import org.springframework.stereotype.Service
+import org.springframework.transaction.PlatformTransactionManager
+import org.springframework.transaction.TransactionManager
 import org.springframework.transaction.support.DefaultTransactionDefinition
 import org.springframework.transaction.support.TransactionSynchronizationManager
 
@@ -22,6 +24,7 @@ open class UserServiceImpl(
     private val userRepository: UserRepository,
     private val userLevelUpgradePolicy: List<UserLevelUpgradePolicy>,
     private val dataSource: DataSource,
+    private val transactionManager: PlatformTransactionManager
 ) : UserUserCases {
     override fun signUp(command: SignUpUserCommand): SignUpUserInfo {
         command.validate()
@@ -58,11 +61,10 @@ open class UserServiceImpl(
             .sortedBy { it.id }
             .filter { policy.canUpgradeLevel(it) }
 
-        val transactionManager = DataSourceTransactionManager(dataSource)
         val status = transactionManager.getTransaction(DefaultTransactionDefinition())
-
         try {
             targetUsers.forEach { upgradeUserLevel(it, policy) }
+            transactionManager.commit(status)
         } catch (e: Exception) {
             transactionManager.rollback(status)
             throw e
