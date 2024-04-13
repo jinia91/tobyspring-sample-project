@@ -69,10 +69,8 @@ class UserServiceTests {
         @Test
         fun `이름이 11자 이상이면 가입에 실패한다`() {
             // given
-            val invalidCommand = SignUpUserCommand(
-                id = "jinia91",
-                name = "12345678901",
-                password = "1q2w3e4r1!",
+            val invalidCommand = validSignUpUserCommand.copy(
+                name = "12345678901"
             )
 
             // when, then
@@ -84,10 +82,8 @@ class UserServiceTests {
         @Test
         fun `이름이 1자 미만이면 가입에 실패한다`() {
             // given
-            val invalidCommand = SignUpUserCommand(
-                id = "jinia91",
-                name = "",
-                password = "1q2w3e4r1!",
+            val invalidCommand = validSignUpUserCommand.copy(
+                name = ""
             )
 
             // when, then
@@ -107,10 +103,8 @@ class UserServiceTests {
             @Test
             fun `비밀번호가 8자 미만이면 가입에 실패한다`() {
                 // given
-                val invalidCommand = SignUpUserCommand(
-                    id = "jinia91",
-                    name = "jinia",
-                    password = "1q2w3e4",
+                val invalidCommand = validSignUpUserCommand.copy(
+                    password = "1Q2w3e!"
                 )
 
                 // when, then
@@ -122,10 +116,8 @@ class UserServiceTests {
             @Test
             fun `비밀번호가 16자 초과이면 가입에 실패한다`() {
                 // given
-                val invalidCommand = SignUpUserCommand(
-                    id = "jinia91",
-                    name = "jinia",
-                    password = "1q2w3e4r1!1q2w3e4r",
+                val invalidCommand = validSignUpUserCommand.copy(
+                    password = "1Q2w3e4r1!1q2w3e4r"
                 )
 
                 // when, then
@@ -137,10 +129,8 @@ class UserServiceTests {
             @Test
             fun `비밀번호가 소문자를 포함하지 않으면 가입에 실패한다`() {
                 // given
-                val invalidCommand = SignUpUserCommand(
-                    id = "jinia91",
-                    name = "jinia",
-                    password = "QWERTYUI1!",
+                val invalidCommand = validSignUpUserCommand.copy(
+                    password = "QWERTYUI1!"
                 )
 
                 // when, then
@@ -152,9 +142,7 @@ class UserServiceTests {
             @Test
             fun `비밀번호가 대문자를 포함하지 않으면 가입에 실패한다`() {
                 // given
-                val invalidCommand = SignUpUserCommand(
-                    id = "jinia91",
-                    name = "jinia",
+                val invalidCommand = validSignUpUserCommand.copy(
                     password = "qwertyui1!",
                 )
 
@@ -166,14 +154,28 @@ class UserServiceTests {
 
             @Test
             fun `비밀번호가 숫자를 포함하지 않으면 가입에 실패한다`() {
+                // given
+                val invalidCommand = validSignUpUserCommand.copy(
+                    password = "QWERTYUI!"
+                )
+
+                // when, then
+                shouldThrow<InvalidPassword> {
+                    sut.signUp(invalidCommand)
+                }
             }
 
             @Test
             fun `비밀번호가 특수문자를 포함하지 않으면 가입에 실패한다`() {
-            }
+                // given
+                val invalidCommand = validSignUpUserCommand.copy(
+                    password = "QWEr1YUI1"
+                )
 
-            @Test
-            fun `비밀번호가 소문자, 대문자, 숫자, 특수문자를 모두 포함하면 가입에 성공한다`() {
+                // when, then
+                shouldThrow<InvalidPassword> {
+                    sut.signUp(invalidCommand)
+                }
             }
         }
     }
