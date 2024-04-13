@@ -38,11 +38,13 @@ class UserServiceTests {
         @Test
         fun `유효한 사용자 정보가 주어지면 사용자는 정상적으로 가입되고 BASIC 레벨이다`() {
             // given
-            val command = SignUpUserCommand(
-                id = "jinia91",
-                name = "jinia",
-                password = "1q2w3e4r1!",
-            )
+            val command = withClue("유효한 사용자 정보") {
+                SignUpUserCommand(
+                    id = "jinia91",
+                    name = "jinia",
+                    password = "1q2w3e4r1!",
+                )
+            }
 
             // when
             val signUpUserInfo = sut.signUp(command)
@@ -81,6 +83,17 @@ class UserServiceTests {
 
         @Test
         fun `이름이 10자 이상이면 가입에 실패한다`() {
+            // given
+            val invalidCommand = SignUpUserCommand(
+                id = "jinia91",
+                name = "jiniajiniajinia",
+                password = "1q2w3e4r1!",
+            )
+
+            // when, then
+            shouldThrow<InvalidUserName> {
+                sut.signUp(invalidCommand)
+            }
         }
 
         /**
