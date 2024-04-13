@@ -2,10 +2,8 @@ package kr.co.jinia91.spring.sample.user.adapters.persistance
 
 import kr.co.jinia91.spring.sample.UserDaoSqlDefinition
 import kr.co.jinia91.spring.sample.user.User
-import kr.co.jinia91.spring.sample.user.UserRepository
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -15,17 +13,24 @@ class UserDao(
     private val userDaoSqlDefinition: UserDaoSqlDefinition,
 ) {
     fun addAndGet(user: User): User {
-        add(user)
+        insertOrUpdate(user)
         return get(user.id) ?: throw IllegalStateException("User not persist")
     }
 
-    fun add(user: User) {
-        jdbcTemplate.update(userDaoSqlDefinition.insert, user.id, user.name, user.password, user.level.toString(), user.logInCount)
+    fun insertOrUpdate(user: User) {
+        jdbcTemplate.update(userDaoSqlDefinition.insertOrUpdate,
+            user.id, user.name, user.password, user.level.toString(), user.logInCount,
+            user.name, user.password, user.level.toString(), user.logInCount
+        )
     }
 
     fun get(id: String): User? {
         return jdbcTemplate.query(userDaoSqlDefinition.select, userMapper, id)
             .firstOrNull()
+    }
+
+    fun getAll(): List<User> {
+        return jdbcTemplate.query(userDaoSqlDefinition.selectAll, userMapper)
     }
 
     fun deleteAll() {

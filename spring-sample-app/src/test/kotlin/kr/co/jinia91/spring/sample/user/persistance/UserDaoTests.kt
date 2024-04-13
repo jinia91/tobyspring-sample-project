@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import sample.sample.validUser
 
 @SpringBootTest
 class UserDaoTests {
@@ -50,6 +51,30 @@ class UserDaoTests {
 
         val userCount = sut.getCount()
         userCount shouldBe 1
+    }
+
+    @Test
+    fun `기존 유저를 업데이트하면 정상적으로 업데이트 된다`() {
+        // given
+        val user = validUser
+        sut.addAndGet(user)
+
+        val updatedUser = user.copy(
+            name = "changed",
+            password = "1Q2w3e4r1!",
+            level = User.Level.SILVER,
+            logInCount = 50
+        )
+        // when
+        sut.insertOrUpdate(updatedUser)
+
+        // then
+        val foundUser = sut.get(validUser.id)
+        foundUser.shouldNotBeNull()
+        foundUser.name shouldBe updatedUser.name
+        foundUser.password shouldBe updatedUser.password
+        foundUser.level shouldBe updatedUser.level
+        foundUser.logInCount shouldBe updatedUser.logInCount
     }
 
 

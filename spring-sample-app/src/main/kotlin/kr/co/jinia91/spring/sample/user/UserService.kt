@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserService(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
     fun signUp(command: SignUpUserCommand): SignUpUserInfo {
         command.validate()
@@ -17,6 +17,7 @@ class UserService(
             level = user.level
         )
     }
+
     private fun SignUpUserCommand.validate() {
         if (userRepository.findById(id) != null) {
             throw AlreadyUserIdExist()
@@ -31,8 +32,16 @@ class UserService(
         )
     }
 
-    fun upgradeUserLevels(id: String) {
+    fun upgradeUserLevels(): UpgradeUserLevelsInfo {
+        val targetUsers = userRepository.findAll()
+            .filter { User.UserLevelUpgradePolicy.canUpgradeLevel(it) }
+        targetUsers.forEach { it.tryUpgradeLevel() }
+        userRepository.saveAll(targetUsers)
+        return buildInfo(targetUsers)
+    }
 
+    private fun buildInfo(targetUsers: List<User>) : UpgradeUserLevelsInfo {
+        return UpgradeUserLevelsInfo(targetUsers.map { UpgradeUserLevelsDto(it.id, it.level) })
     }
 }
 

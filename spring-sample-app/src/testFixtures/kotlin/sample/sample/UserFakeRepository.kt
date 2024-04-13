@@ -18,4 +18,12 @@ class UserFakeRepository : UserRepository {
     override fun findById(id: String): User? {
         return users[id]
     }
+
+    override fun findAll(): List<User> {
+        return users.values.toList()
+    }
+
+    override fun saveAll(users: List<User>) {
+        users.forEach { save(it) }
+    }
 }

@@ -19,4 +19,12 @@ class UserRepositoryAdapter(
     override fun findById(id: String): User? {
         return userDao.get(id)
     }
+
+    override fun findAll(): List<User> {
+        return userDao.getAll()
+    }
+
+    override fun saveAll(users: List<User>) {
+        users.forEach { userDao.insertOrUpdate(it) }
+    }
 }

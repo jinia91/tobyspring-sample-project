@@ -39,10 +39,9 @@ class UpgradeUserLevelsTests {
             }
             userRepository.save(userWith50LogInCount)
         }
-        val command = UpgradeUserLevelsCommand()
 
         // when
-        sut.upgradeUserLevels(command)
+        sut.upgradeUserLevels()
 
         // then
         val user = userRepository.findById("11112")

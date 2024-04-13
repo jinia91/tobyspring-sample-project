@@ -7,6 +7,21 @@ data class User constructor(
     var level: Level,
     var logInCount: Int
 ) {
+    enum class Level {
+        BASIC,
+        SILVER,
+        GOLD
+        ;
+
+        fun nextLevel(): Level {
+            return when (this) {
+                BASIC -> SILVER
+                SILVER -> GOLD
+                GOLD -> GOLD // 최고레벨은 자신을 반환
+            }
+        }
+    }
+
     init {
         validateInvariants()
     }
@@ -16,10 +31,11 @@ data class User constructor(
         require(password.matches(Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,16}\$"))) { throw InvalidPassword() }
     }
 
-    enum class Level {
-        BASIC,
-        SILVER,
-        GOLD
+    fun tryUpgradeLevel() {
+        val canUpgrade = UserLevelUpgradePolicy.canUpgradeLevel(this)
+        if (canUpgrade) {
+            level = level.nextLevel()
+        }
     }
 
     companion object {
@@ -31,6 +47,15 @@ data class User constructor(
                 level = Level.BASIC,
                 logInCount = 0
             )
+        }
+    }
+    object UserLevelUpgradePolicy {
+        fun canUpgradeLevel(user: User): Boolean {
+            return when (user.level) {
+                Level.BASIC -> user.logInCount >= 50
+                Level.SILVER -> false
+                Level.GOLD -> false
+            }
         }
     }
 }
