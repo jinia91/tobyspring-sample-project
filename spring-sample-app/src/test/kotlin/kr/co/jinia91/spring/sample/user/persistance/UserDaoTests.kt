@@ -34,7 +34,8 @@ class UserDaoTests {
             id = "1111",
             name = "jinia",
             password = "123456",
-            level = User.Level.BASIC
+            level = User.Level.BASIC,
+            logInCount = 0
         )
 
         // when
@@ -45,6 +46,7 @@ class UserDaoTests {
         foundUser.name shouldBe "jinia"
         foundUser.password shouldBe "123456"
         foundUser.level shouldBe User.Level.BASIC
+        foundUser.logInCount shouldBe 0
 
         val userCount = sut.getCount()
         userCount shouldBe 1

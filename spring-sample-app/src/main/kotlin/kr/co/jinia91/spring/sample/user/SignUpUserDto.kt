@@ -10,5 +10,6 @@ data class SignUpUserInfo(
     val id: String,
     val name: String,
     val password: String,
-    val level: User.Level
+    val level: User.Level,
+    val logInCount : Int = 0,
 )

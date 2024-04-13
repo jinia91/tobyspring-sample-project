@@ -5,6 +5,7 @@ data class User constructor(
     var name: String,
     var password: String,
     var level: Level,
+    var logInCount: Int
 ) {
     enum class Level {
         BASIC,
@@ -20,7 +21,8 @@ data class User constructor(
                 id = id,
                 name = name,
                 password = password,
-                level = Level.BASIC
+                level = Level.BASIC,
+                logInCount = 0
             )
         }
     }

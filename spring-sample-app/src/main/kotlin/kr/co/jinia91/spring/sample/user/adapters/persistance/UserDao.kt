@@ -20,7 +20,7 @@ class UserDao(
     }
 
     fun add(user: User) {
-        jdbcTemplate.update(userDaoSqlDefinition.insert, user.id, user.name, user.password, user.level.toString())
+        jdbcTemplate.update(userDaoSqlDefinition.insert, user.id, user.name, user.password, user.level.toString(), user.logInCount)
     }
 
     fun get(id: String): User? {
