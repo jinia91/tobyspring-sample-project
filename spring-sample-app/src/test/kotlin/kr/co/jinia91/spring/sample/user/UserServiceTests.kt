@@ -136,6 +136,17 @@ class UserServiceTests {
 
             @Test
             fun `비밀번호가 16자 초과이면 가입에 실패한다`() {
+                // given
+                val invalidCommand = SignUpUserCommand(
+                    id = "jinia91",
+                    name = "jinia",
+                    password = "1q2w3e4r1!1q2w3e4r",
+                )
+
+                // when, then
+                shouldThrow<InvalidPassword> {
+                    sut.signUp(invalidCommand)
+                }
             }
 
             @Test

@@ -7,3 +7,5 @@ abstract class UserException() : BusinessExceptions()
 class AlreadyUserIdExist : UserException()
 
 class InvalidUserName : UserException()
+
+class InvalidPassword : UserException()
