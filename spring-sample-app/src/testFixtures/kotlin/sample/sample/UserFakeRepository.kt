@@ -6,7 +6,12 @@ import kr.co.jinia91.spring.sample.user.UserRepository
 class UserFakeRepository : UserRepository {
     private val users = mutableMapOf<String, User>()
 
-    override fun save(user: User) {
+    override fun save(user: User) : User {
         users[user.id] = user
+        return user
+    }
+
+    override fun deleteAll() {
+        users.clear()
     }
 }

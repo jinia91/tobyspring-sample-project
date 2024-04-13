@@ -1,24 +1,26 @@
-package kr.co.jinia91.spring.sample
+package kr.co.jinia91.spring.sample.user.adapters.persistance
 
+import kr.co.jinia91.spring.sample.UserDaoSqlDefinition
 import kr.co.jinia91.spring.sample.user.User
+import kr.co.jinia91.spring.sample.user.UserRepository
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Component
+import org.springframework.stereotype.Repository
 
-@Component
+@Repository
 class UserDao(
     private val jdbcTemplate: JdbcTemplate,
     private val userMapper: RowMapper<User>,
-    private val userDaoSqlDefinition: UserDaoSqlDefinition
+    private val userDaoSqlDefinition: UserDaoSqlDefinition,
 ) {
     fun addAndGet(user: User): User {
-        jdbcTemplate.update(userDaoSqlDefinition.insert, user.id, user.name, user.password)
-        return jdbcTemplate.query(userDaoSqlDefinition.select, userMapper, user.id)
-            .firstOrNull() ?: throw IllegalArgumentException("User not found")
+        add(user)
+        return get(user.id)
     }
 
     fun add(user: User) {
-        jdbcTemplate.update(userDaoSqlDefinition.insert, user.id, user.name, user.password)
+        jdbcTemplate.update(userDaoSqlDefinition.insert, user.id, user.name, user.password, user.level.toString())
     }
 
     fun get(id: String): User {

@@ -1,6 +1,7 @@
 package kr.co.jinia91.spring.sample.user
 
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -8,6 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
 class UserServiceTests {
+    @Autowired
+    private lateinit var sut: UserService
+    @Autowired
+    private lateinit var userRepository: UserRepository
+
     /**
      * 사용자 가입 유즈케이스 명세 정리
      *
@@ -26,8 +32,6 @@ class UserServiceTests {
      */
     @Nested
     inner class `사용자 가입 유즈케이스 테스트`{
-        @Autowired
-        private lateinit var sut: UserService
         @Test
         fun `유효한 사용자 정보가 주어지면 사용자는 정상적으로 가입되고 BASIC 레벨이다`(){
             // given
@@ -95,5 +99,10 @@ class UserServiceTests {
         fun `SILVER 레벨에서 30회 이상 게시글을 작성하면 GOLD 레벨로 업그레이드 된다`(){}
         @Test
         fun `30회 이상 게시글을 작성하더라도 SILVER 레벨이 아니면 GOLD 레벨로 업그레이드 되지 않는다`(){}
+    }
+
+    @BeforeEach
+    fun setUp() {
+        userRepository.deleteAll()
     }
 }
