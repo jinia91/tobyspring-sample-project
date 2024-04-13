@@ -121,6 +121,17 @@ class UserServiceTests {
         inner class `비밀번호 검증 테스트 케이스` {
             @Test
             fun `비밀번호가 8자 미만이면 가입에 실패한다`() {
+                // given
+                val invalidCommand = SignUpUserCommand(
+                    id = "jinia91",
+                    name = "jinia",
+                    password = "1q2w3e4",
+                )
+
+                // when, then
+                shouldThrow<InvalidPassword> {
+                    sut.signUp(invalidCommand)
+                }
             }
 
             @Test
