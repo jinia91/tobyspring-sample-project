@@ -7,6 +7,15 @@ data class User constructor(
     var level: Level,
     var logInCount: Int
 ) {
+    init {
+        validateInvariants()
+    }
+
+    private fun validateInvariants() {
+        require(name.length in 1..10) { throw InvalidUserName() }
+        require(password.matches(Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,16}\$"))) { throw InvalidPassword() }
+    }
+
     enum class Level {
         BASIC,
         SILVER,
@@ -15,8 +24,6 @@ data class User constructor(
 
     companion object {
         fun newOne(id: String, name: String, password: String): User {
-            require(name.length in 1..10) { throw InvalidUserName() }
-            require(password.matches(Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,16}\$"))) { throw InvalidPassword() }
             return User(
                 id = id,
                 name = name,

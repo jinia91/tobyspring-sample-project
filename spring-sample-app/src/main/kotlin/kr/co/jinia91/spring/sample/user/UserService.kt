@@ -30,5 +30,9 @@ class UserService(
             password = password
         )
     }
+
+    fun upgradeUserLevels(id: String) {
+
+    }
 }
 
