@@ -3,9 +3,11 @@ package kr.co.jinia91.spring.sample.user
 import io.kotest.assertions.withClue
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.mockk.verify
 import kr.co.jinia91.spring.sample.user.application.UserUserCases
 import kr.co.jinia91.spring.sample.user.domain.EVENT_STATUS
 import kr.co.jinia91.spring.sample.user.domain.EventStatus
+import kr.co.jinia91.spring.sample.user.domain.Reminder
 import kr.co.jinia91.spring.sample.user.domain.User
 import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradeDefaultPolicy.MIN_LOG_COUNT_FOR_SILVER
 import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradeDefaultPolicy.MIN_POST_COUNT_FOR_GOLD
@@ -34,6 +36,9 @@ class UpgradeUserLevelsTests {
 
     @Autowired
     private lateinit var userRepository: UserRepository
+
+    @Autowired
+    private lateinit var reminder: Reminder
 
     @Test
     fun `BASIC 사용자는 50회 이상 로그인을 하면 SILVER 레벨로 업그레이드 된다`() {
@@ -202,5 +207,33 @@ class UpgradeUserLevelsTests {
 
         // tearDown
         EVENT_STATUS = EventStatus.DEFAULT
+    }
+
+    @Test
+    fun `메일을 가진 유저한테는 업그레이드시 메일을 보낸다`() {
+        // given
+        withClue("이벤트 기간동안 로그인 50회를 한 메일을 가진 BASIC 신규 유저가 존재한다") {
+            val userWith50LogInCount = User.newOne("1", "jinia1", "1Q2w3e4r1!", email = "abc@program.co.kr").apply {
+                logInCount = MIN_LOG_COUNT_FOR_SILVER
+                level = User.Level.BASIC
+            }
+
+            val userWith50LogInCountWithoutMail = User.newOne("2", "jinia2", "1Q2w3e4r1!", email = null).apply {
+                logInCount = MIN_LOG_COUNT_FOR_SILVER
+                level = User.Level.BASIC
+            }
+
+            val nonUpgradeUser = User.newOne("3", "jinia3", "1Q2w3e4r1!", email = null)
+
+            userRepository.save(userWith50LogInCount)
+            userRepository.save(userWith50LogInCountWithoutMail)
+            userRepository.save(nonUpgradeUser)
+        }
+
+        // when
+        sut.upgradeUserLevels()
+
+        // then
+        verify(exactly = 1) { reminder.sendTOUpgradedUser(any()) }
     }
 }
