@@ -1,7 +1,7 @@
 package sample.sample
 
-import kr.co.jinia91.spring.sample.user.SignUpUserCommand
-import kr.co.jinia91.spring.sample.user.User
+import kr.co.jinia91.spring.sample.user.application.SignUpUserCommand
+import kr.co.jinia91.spring.sample.user.domain.User
 
 val validSignUpUserCommand = SignUpUserCommand(
     id = "jinia91",

@@ -1,7 +1,7 @@
 package kr.co.jinia91.spring.sample.user.adapters.persistance
 
-import kr.co.jinia91.spring.sample.user.User
-import kr.co.jinia91.spring.sample.user.UserRepository
+import kr.co.jinia91.spring.sample.user.domain.User
+import kr.co.jinia91.spring.sample.user.domain.UserRepository
 import org.springframework.stereotype.Repository
 
 @Repository

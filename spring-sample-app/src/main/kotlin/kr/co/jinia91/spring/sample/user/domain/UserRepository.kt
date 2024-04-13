@@ -1,4 +1,6 @@
-package kr.co.jinia91.spring.sample.user
+package kr.co.jinia91.spring.sample.user.domain
+
+import kr.co.jinia91.spring.sample.user.domain.User
 
 interface UserRepository {
     fun save(user: User): User

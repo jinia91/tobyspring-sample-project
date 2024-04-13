@@ -3,6 +3,12 @@ package kr.co.jinia91.spring.sample.user
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
+import kr.co.jinia91.spring.sample.user.application.UserService
+import kr.co.jinia91.spring.sample.user.domain.AlreadyUserIdExist
+import kr.co.jinia91.spring.sample.user.domain.InvalidPassword
+import kr.co.jinia91.spring.sample.user.domain.InvalidUserName
+import kr.co.jinia91.spring.sample.user.domain.User
+import kr.co.jinia91.spring.sample.user.domain.UserRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test

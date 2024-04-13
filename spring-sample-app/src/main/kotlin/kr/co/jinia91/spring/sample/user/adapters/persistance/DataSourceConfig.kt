@@ -1,8 +1,8 @@
-package kr.co.jinia91.spring.sample
+package kr.co.jinia91.spring.sample.user.adapters.persistance
 
 import java.sql.ResultSet
 import javax.sql.DataSource
-import kr.co.jinia91.spring.sample.user.User
+import kr.co.jinia91.spring.sample.user.domain.User
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.jdbc.core.JdbcTemplate

@@ -1,4 +1,6 @@
-package kr.co.jinia91.spring.sample.user
+package kr.co.jinia91.spring.sample.user.application
+
+import kr.co.jinia91.spring.sample.user.domain.User
 
 data class SignUpUserCommand(
     val id: String,

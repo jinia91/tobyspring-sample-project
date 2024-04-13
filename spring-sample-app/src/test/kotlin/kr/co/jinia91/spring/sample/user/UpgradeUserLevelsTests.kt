@@ -3,11 +3,13 @@ package kr.co.jinia91.spring.sample.user
 import io.kotest.assertions.withClue
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import kr.co.jinia91.spring.sample.user.application.UserService
+import kr.co.jinia91.spring.sample.user.domain.User
+import kr.co.jinia91.spring.sample.user.domain.UserRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import sample.sample.validSignUpUserCommand
 import sample.sample.validUser
 
 /**
@@ -69,6 +71,23 @@ class UpgradeUserLevelsTests {
 
     @Test
     fun `SILVER 레벨에서 30회 이상 게시글을 작성하면 GOLD 레벨로 업그레이드 된다`() {
+        // given
+        withClue("게시글 30회를 작성한 SILVER 유저가 존재한다") {
+            val userWith30PostCount = validUser.apply {
+                level = User.Level.SILVER
+                logInCount = 50
+                postCount = 30
+            }
+            userRepository.save(userWith30PostCount)
+        }
+
+        // when
+        sut.upgradeUserLevels()
+
+        // then
+        val user = userRepository.findById("jinia91")
+        user.shouldNotBeNull()
+        user.level shouldBe User.Level.GOLD
     }
 
     @Test

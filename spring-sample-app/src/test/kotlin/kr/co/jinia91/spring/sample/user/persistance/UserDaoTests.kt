@@ -2,7 +2,7 @@ package kr.co.jinia91.spring.sample.user.persistance
 
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import kr.co.jinia91.spring.sample.user.User
+import kr.co.jinia91.spring.sample.user.domain.User
 import kr.co.jinia91.spring.sample.user.adapters.persistance.UserDao
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -31,21 +31,15 @@ class UserDaoTests {
     @Test
     fun `유저를 추가하면 정상 저장된다`() {
         // given
-        val user = User(
-            id = "1111",
-            name = "jinia",
-            password = "123456",
-            level = User.Level.BASIC,
-            logInCount = 0
-        )
+        val user = validUser
 
         // when
         val foundUser = sut.addAndGet(user)
 
         // then - 상태검증
         foundUser.shouldNotBeNull()
-        foundUser.name shouldBe "jinia"
-        foundUser.password shouldBe "123456"
+        foundUser.id shouldBe user.id
+        foundUser.name shouldBe user.name
         foundUser.level shouldBe User.Level.BASIC
         foundUser.logInCount shouldBe 0
 

@@ -1,4 +1,4 @@
-package kr.co.jinia91.spring.sample
+package kr.co.jinia91.spring.sample.user.adapters.persistance
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

@@ -1,7 +1,7 @@
 package sample.sample
 
-import kr.co.jinia91.spring.sample.user.User
-import kr.co.jinia91.spring.sample.user.UserRepository
+import kr.co.jinia91.spring.sample.user.domain.User
+import kr.co.jinia91.spring.sample.user.domain.UserRepository
 
 class UserFakeRepository : UserRepository {
     private val users = mutableMapOf<String, User>()

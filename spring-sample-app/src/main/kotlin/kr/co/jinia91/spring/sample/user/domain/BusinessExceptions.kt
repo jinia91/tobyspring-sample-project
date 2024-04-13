@@ -1,4 +1,4 @@
-package kr.co.jinia91.spring.sample.user
+package kr.co.jinia91.spring.sample.user.domain
 
 abstract class BusinessExceptions :RuntimeException()
 

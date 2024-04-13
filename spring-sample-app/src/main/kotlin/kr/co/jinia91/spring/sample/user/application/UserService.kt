@@ -1,5 +1,8 @@
-package kr.co.jinia91.spring.sample.user
+package kr.co.jinia91.spring.sample.user.application
 
+import kr.co.jinia91.spring.sample.user.domain.AlreadyUserIdExist
+import kr.co.jinia91.spring.sample.user.domain.User
+import kr.co.jinia91.spring.sample.user.domain.UserRepository
 import org.springframework.stereotype.Service
 
 @Service
