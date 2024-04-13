@@ -25,7 +25,8 @@ class DataSourceConfig {
         User(
             id = rs.getString("id"),
             name = rs.getString("name"),
-            password = rs.getString("password")
+            password = rs.getString("password"),
+            level = User.Level.valueOf(rs.getString("level"))
         )
     }
 

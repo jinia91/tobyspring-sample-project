@@ -38,13 +38,13 @@ class UserServiceTests {
             )
 
             // when
-            val user : User = sut.signUp(command)
+            val signUpUserInfo = sut.signUp(command)
 
             // then
-            user.id shouldBe command.id
-            user.name shouldBe command.name
-            user.password shouldBe command.password
-            user.level shouldBe UserLevel.BASIC
+            signUpUserInfo.id shouldBe command.id
+            signUpUserInfo.name shouldBe command.name
+            signUpUserInfo.password shouldBe command.password
+            signUpUserInfo.level shouldBe User.Level.BASIC
         }
         @Test
         fun `아이디가 중복되면 가입에 실패한다`(){}

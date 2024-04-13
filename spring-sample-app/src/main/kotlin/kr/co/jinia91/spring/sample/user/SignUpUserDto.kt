@@ -5,3 +5,10 @@ data class SignUpUserCommand(
     val name: String,
     val password: String,
 )
+
+data class SignUpUserInfo(
+    val id: String,
+    val name: String,
+    val password: String,
+    val level: User.Level
+)
