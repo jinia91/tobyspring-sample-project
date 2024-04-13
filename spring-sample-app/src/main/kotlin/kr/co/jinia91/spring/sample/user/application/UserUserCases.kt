@@ -1,20 +1,25 @@
 package kr.co.jinia91.spring.sample.user.application
 
+import javax.sql.DataSource
 import kr.co.jinia91.spring.sample.user.domain.AlreadyUserIdExist
 import kr.co.jinia91.spring.sample.user.domain.EVENT_STATUS
 import kr.co.jinia91.spring.sample.user.domain.User
 import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradePolicy
 import kr.co.jinia91.spring.sample.user.domain.UserRepository
+import org.springframework.jdbc.datasource.DataSourceUtils
 import org.springframework.stereotype.Service
+import org.springframework.transaction.support.TransactionSynchronizationManager
 
-interface UserUserCases{
+interface UserUserCases {
     fun signUp(command: SignUpUserCommand): SignUpUserInfo
     fun upgradeUserLevels(): UpgradeUserLevelsInfo
 }
+
 @Service
 open class UserServiceImpl(
     private val userRepository: UserRepository,
-    private val userLevelUpgradePolicy: List<UserLevelUpgradePolicy>
+    private val userLevelUpgradePolicy: List<UserLevelUpgradePolicy>,
+    private val dataSource: DataSource,
 ) : UserUserCases {
     override fun signUp(command: SignUpUserCommand): SignUpUserInfo {
         command.validate()
@@ -43,14 +48,27 @@ open class UserServiceImpl(
     }
 
     override fun upgradeUserLevels(): UpgradeUserLevelsInfo {
-        val policy = userLevelUpgradePolicy.find{
+        val policy = userLevelUpgradePolicy.find {
             EVENT_STATUS == it.supportingEventStatus
         } ?: throw IllegalArgumentException("No policy found for $EVENT_STATUS")
 
         val targetUsers = userRepository.findAll()
             .sortedBy { it.id }
             .filter { policy.canUpgradeLevel(it) }
-        targetUsers.forEach { upgradeUserLevel(it, policy) }
+
+        TransactionSynchronizationManager.initSynchronization()
+        DataSourceUtils.getConnection(dataSource).use { connection ->
+            connection.autoCommit = false
+            try {
+                targetUsers.forEach { upgradeUserLevel(it, policy) }
+            } catch (e: Exception) {
+                throw e
+            } finally {
+                TransactionSynchronizationManager.unbindResource(dataSource)
+                TransactionSynchronizationManager.clearSynchronization()
+            }
+
+        }
         return buildInfo(targetUsers)
     }
 
@@ -62,7 +80,7 @@ open class UserServiceImpl(
         userRepository.save(it)
     }
 
-    private fun buildInfo(targetUsers: List<User>) : UpgradeUserLevelsInfo {
+    private fun buildInfo(targetUsers: List<User>): UpgradeUserLevelsInfo {
         return UpgradeUserLevelsInfo(targetUsers.map { UpgradeUserLevelsDto(it.id, it.level) })
     }
 }

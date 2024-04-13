@@ -3,6 +3,7 @@ package kr.co.jinia91.spring.sample.user
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
+import javax.sql.DataSource
 import kr.co.jinia91.spring.sample.user.application.UserUserCases
 import kr.co.jinia91.spring.sample.user.domain.User
 import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradePolicy
@@ -24,10 +25,13 @@ class TransactionTestConfig {
     @Autowired
     lateinit var userLevelUpgradePolicy: List<UserLevelUpgradePolicy>
 
+    @Autowired
+    lateinit var dataSource: DataSource
+
     @Bean
     @Primary
     fun userService(): UserUserCases {
-        return UserFakeService(userRepository, userLevelUpgradePolicy)
+        return UserFakeService(userRepository, userLevelUpgradePolicy, dataSource)
     }
 }
 
