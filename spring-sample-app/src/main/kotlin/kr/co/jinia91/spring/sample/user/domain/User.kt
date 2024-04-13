@@ -52,10 +52,12 @@ data class User constructor(
         }
     }
     object UserLevelUpgradePolicy {
+        const val MIN_LOG_COUNT_FOR_SILVER = 50
+        const val MIN_POST_COUNT_FOR_GOLD = 30
         fun canUpgradeLevel(user: User): Boolean {
             return when (user.level) {
-                Level.BASIC -> user.logInCount >= 50
-                Level.SILVER -> user.postCount >= 30
+                Level.BASIC -> user.logInCount >= MIN_LOG_COUNT_FOR_SILVER
+                Level.SILVER -> user.postCount >= MIN_POST_COUNT_FOR_GOLD
                 Level.GOLD -> false
             }
         }

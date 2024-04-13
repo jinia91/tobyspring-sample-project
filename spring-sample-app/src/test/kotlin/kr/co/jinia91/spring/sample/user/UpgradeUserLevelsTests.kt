@@ -42,7 +42,7 @@ class UpgradeUserLevelsTests {
                 name = "jinia",
                 password = "1Q2w3e4r1!"
             ).apply {
-                logInCount = 50
+                logInCount = User.UserLevelUpgradePolicy.MIN_LOG_COUNT_FOR_SILVER
             }
             userRepository.save(userWith50LogInCount)
         }
@@ -79,8 +79,8 @@ class UpgradeUserLevelsTests {
         withClue("게시글 30회를 작성한 SILVER 유저가 존재한다") {
             val userWith30PostCount = validUser().apply {
                 level = User.Level.SILVER
-                logInCount = 50
-                postCount = 30
+                logInCount = User.UserLevelUpgradePolicy.MIN_LOG_COUNT_FOR_SILVER
+                postCount = User.UserLevelUpgradePolicy.MIN_POST_COUNT_FOR_GOLD
             }
             userRepository.save(userWith30PostCount)
         }
@@ -99,8 +99,8 @@ class UpgradeUserLevelsTests {
         // given
         withClue("게시글 30회를 작성한 BASIC 유저가 존재한다") {
             val noneUpgradeTargetUser = validUser().apply {
-                logInCount = 50
-                postCount = 30
+                logInCount = User.UserLevelUpgradePolicy.MIN_LOG_COUNT_FOR_SILVER
+                postCount = User.UserLevelUpgradePolicy.MIN_POST_COUNT_FOR_GOLD
             }
             userRepository.save(noneUpgradeTargetUser)
         }
@@ -136,6 +136,13 @@ class UpgradeUserLevelsTests {
             expectedGold.shouldNotBeNull()
             expectedGold.level shouldBe User.Level.GOLD
         }
+
+        // 상태 검증
+        withClue("나머지는 레벨이 그대로이다") {
+            userRepository.findById("1")?.level shouldBe User.Level.BASIC
+            userRepository.findById("3")?.level shouldBe User.Level.SILVER
+            userRepository.findById("5")?.level shouldBe User.Level.GOLD
+        }
     }
 
     private fun build5Users() = listOf(
@@ -145,7 +152,7 @@ class UpgradeUserLevelsTests {
         },
         User.newOne("2", "jinia2", "1Q2w3e4r1!").apply {
             level = User.Level.BASIC
-            logInCount = 50
+            logInCount = User.UserLevelUpgradePolicy.MIN_LOG_COUNT_FOR_SILVER
         },
         User.newOne("3", "jinia3", "1Q2w3e4r1!").apply {
             level = User.Level.SILVER
@@ -154,13 +161,13 @@ class UpgradeUserLevelsTests {
         },
         User.newOne("4", "jinia4", "1Q2w3e4r1!").apply {
             level = User.Level.SILVER
-            logInCount = 60
-            postCount = 30
+            logInCount = User.UserLevelUpgradePolicy.MIN_LOG_COUNT_FOR_SILVER + 10
+            postCount = User.UserLevelUpgradePolicy.MIN_POST_COUNT_FOR_GOLD
         },
         User.newOne("5", "jinia5", "1Q2w3e4r1!").apply {
             level = User.Level.GOLD
-            logInCount = 100
-            postCount = 100
+            logInCount = User.UserLevelUpgradePolicy.MIN_LOG_COUNT_FOR_SILVER + 10
+            postCount = User.UserLevelUpgradePolicy.MIN_POST_COUNT_FOR_GOLD + 10
         },
     )
 }

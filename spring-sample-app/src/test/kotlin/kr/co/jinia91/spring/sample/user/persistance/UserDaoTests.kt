@@ -57,7 +57,7 @@ class UserDaoTests {
             name = "changed",
             password = "1Q2w3e4r1!",
             level = User.Level.SILVER,
-            logInCount = 50
+            logInCount = User.UserLevelUpgradePolicy.MIN_LOG_COUNT_FOR_SILVER + 10
         )
         // when
         sut.insertOrUpdate(updatedUser)
