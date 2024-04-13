@@ -18,8 +18,8 @@ class UserDao(
 
     fun insertOrUpdate(user: User) {
         jdbcTemplate.update(userDaoSqlDefinition.insertOrUpdate,
-            user.id, user.name, user.password, user.level.toString(), user.logInCount, user.postCount,
-            user.name, user.password, user.level.toString(), user.logInCount, user.postCount
+            user.id, user.name, user.password, user.level.toString(), user.logInCount, user.postCount, user.email,
+            user.name, user.password, user.level.toString(), user.logInCount, user.postCount, user.email
         )
     }
 

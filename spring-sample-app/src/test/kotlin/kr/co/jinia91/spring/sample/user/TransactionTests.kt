@@ -78,7 +78,8 @@ class TransactionTests {
             User.newOne(
                 id = it.toString(),
                 name = "jinia$it",
-                password = "1Q2w3e4r1!"
+                password = "1Q2w3e4r1!",
+                email = null
             ).apply {
                 logInCount = 50
                 level = User.Level.BASIC

@@ -40,7 +40,8 @@ open class UserServiceImpl(
         return User.newOne(
             id = id,
             name = name,
-            password = password
+            password = password,
+            email = email
         )
     }
 

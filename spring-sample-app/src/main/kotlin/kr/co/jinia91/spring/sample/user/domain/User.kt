@@ -7,6 +7,7 @@ data class User constructor(
     var level: Level,
     var logInCount: Int,
     var postCount: Int,
+    var email: String?,
 ) {
     enum class Level {
         BASIC,
@@ -40,7 +41,7 @@ data class User constructor(
     }
 
     companion object {
-        fun newOne(id: String, name: String, password: String): User {
+        fun newOne(id: String, name: String, password: String, email: String?): User {
             return User(
                 id = id,
                 name = name,
@@ -48,6 +49,7 @@ data class User constructor(
                 level = Level.BASIC,
                 logInCount = 0,
                 postCount = 0,
+                email = email
             )
         }
     }

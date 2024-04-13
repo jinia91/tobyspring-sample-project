@@ -42,7 +42,8 @@ class UpgradeUserLevelsTests {
             val userWith50LogInCount = User.newOne(
                 id = "11112",
                 name = "jinia",
-                password = "1Q2w3e4r1!"
+                password = "1Q2w3e4r1!",
+                email = null
             ).apply {
                 logInCount = MIN_LOG_COUNT_FOR_SILVER
             }
@@ -148,26 +149,26 @@ class UpgradeUserLevelsTests {
     }
 
     private fun build5Users() = listOf(
-        User.newOne("1", "jinia1", "1Q2w3e4r1!").apply {
+        User.newOne("1", "jinia1", "1Q2w3e4r1!", email = null).apply {
             level = User.Level.BASIC
             postCount = MIN_POST_COUNT_FOR_GOLD - 1
         },
-        User.newOne("2", "jinia2", "1Q2w3e4r1!").apply {
+        User.newOne("2", "jinia2", "1Q2w3e4r1!", email = null).apply {
             level = User.Level.BASIC
             logInCount = MIN_LOG_COUNT_FOR_SILVER
         },
-        User.newOne("3", "jinia3", "1Q2w3e4r1!").apply {
+        User.newOne("3", "jinia3", "1Q2w3e4r1!", email = null).apply {
             level = User.Level.SILVER
             logInCount = MIN_LOG_COUNT_FOR_SILVER + 10
             postCount = MIN_POST_COUNT_FOR_GOLD - 1
 
         },
-        User.newOne("4", "jinia4", "1Q2w3e4r1!").apply {
+        User.newOne("4", "jinia4", "1Q2w3e4r1!", email = null).apply {
             level = User.Level.SILVER
             logInCount = MIN_LOG_COUNT_FOR_SILVER + 10
             postCount = MIN_POST_COUNT_FOR_GOLD
         },
-        User.newOne("5", "jinia5", "1Q2w3e4r1!").apply {
+        User.newOne("5", "jinia5", "1Q2w3e4r1!", email = null).apply {
             level = User.Level.GOLD
             logInCount = MIN_LOG_COUNT_FOR_SILVER + 10
             postCount = MIN_POST_COUNT_FOR_GOLD + 10
@@ -183,7 +184,8 @@ class UpgradeUserLevelsTests {
             val userWith5LogInCount = User.newOne(
                 id = "11112",
                 name = "jinia",
-                password = "1Q2w3e4r1!"
+                password = "1Q2w3e4r1!",
+                email = null
             ).apply {
                 logInCount = UserLevelUpgradeEventPolicy.MIN_LOG_COUNT_FOR_SILVER
             }

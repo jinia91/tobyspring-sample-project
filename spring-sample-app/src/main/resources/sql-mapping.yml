@@ -4,4 +4,4 @@ sql:
     deleteAll: "DELETE FROM user"
     count: "select count(*) from user"
     selectAll: "select * from user"
-    insert-or-update: "INSERT INTO user (id, name, password, level, login_cnt, post_cnt) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, password = ?, level = ?, login_cnt = ?, post_cnt = ?"
+    insert-or-update: "INSERT INTO user (id, name, password, level, login_cnt, post_cnt, email) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, password = ?, level = ?, login_cnt = ?, post_cnt = ?, email = ?"

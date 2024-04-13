@@ -6,6 +6,7 @@ data class SignUpUserCommand(
     val id: String,
     val name: String,
     val password: String,
+    val email: String?,
 )
 
 data class SignUpUserInfo(
