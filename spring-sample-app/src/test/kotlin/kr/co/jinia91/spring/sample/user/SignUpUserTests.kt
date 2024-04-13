@@ -3,14 +3,12 @@ package kr.co.jinia91.spring.sample.user
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
-import kr.co.jinia91.spring.sample.user.application.UserService
+import kr.co.jinia91.spring.sample.user.application.UserUserCases
 import kr.co.jinia91.spring.sample.user.domain.AlreadyUserIdExist
 import kr.co.jinia91.spring.sample.user.domain.InvalidPassword
 import kr.co.jinia91.spring.sample.user.domain.InvalidUserName
 import kr.co.jinia91.spring.sample.user.domain.User
 import kr.co.jinia91.spring.sample.user.domain.UserRepository
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,7 +36,7 @@ import sample.sample.validSignUpUserCommand
 @Transactional
 class SignUpUserTests {
     @Autowired
-    private lateinit var sut: UserService
+    private lateinit var sut: UserUserCases
 
     @Autowired
     private lateinit var userRepository: UserRepository

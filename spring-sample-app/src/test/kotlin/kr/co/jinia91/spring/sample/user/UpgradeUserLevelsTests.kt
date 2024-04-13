@@ -3,19 +3,15 @@ package kr.co.jinia91.spring.sample.user
 import io.kotest.assertions.withClue
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import kr.co.jinia91.spring.sample.user.application.UserService
+import kr.co.jinia91.spring.sample.user.application.UserUserCases
 import kr.co.jinia91.spring.sample.user.domain.EVENT_STATUS
 import kr.co.jinia91.spring.sample.user.domain.EventStatus
 import kr.co.jinia91.spring.sample.user.domain.User
-import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradeDefaultPolicy
 import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradeDefaultPolicy.MIN_LOG_COUNT_FOR_SILVER
 import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradeDefaultPolicy.MIN_POST_COUNT_FOR_GOLD
 import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradeEventPolicy
 import kr.co.jinia91.spring.sample.user.domain.UserRepository
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
@@ -34,7 +30,7 @@ import sample.sample.validUser
 @Transactional
 class UpgradeUserLevelsTests {
     @Autowired
-    private lateinit var sut: UserService
+    private lateinit var sut: UserUserCases
 
     @Autowired
     private lateinit var userRepository: UserRepository
