@@ -2,6 +2,7 @@ package kr.co.jinia91.spring.sample.user.application
 
 import kr.co.jinia91.spring.sample.user.domain.AlreadyUserIdExist
 import kr.co.jinia91.spring.sample.user.domain.EVENT_STATUS
+import kr.co.jinia91.spring.sample.user.domain.Reminder
 import kr.co.jinia91.spring.sample.user.domain.User
 import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradePolicy
 import kr.co.jinia91.spring.sample.user.domain.UserRepository
@@ -17,6 +18,7 @@ interface UserUserCases {
 open class UserServiceImpl(
     private val userRepository: UserRepository,
     private val userLevelUpgradePolicy: List<UserLevelUpgradePolicy>,
+    private val reminder: Reminder
 ) : UserUserCases {
     override fun signUp(command: SignUpUserCommand): SignUpUserInfo {
         command.validate()
@@ -60,11 +62,12 @@ open class UserServiceImpl(
     }
 
     protected fun upgradeUserLevel(
-        it: User,
+        user: User,
         policy: UserLevelUpgradePolicy,
     ) {
-        it.tryUpgradeLevel(policy)
-        userRepository.save(it)
+        user.tryUpgradeLevel(policy)
+        userRepository.save(user)
+        user.email?.let { reminder.sendTOUpgradedUser(it) }
     }
 
     private fun buildInfo(targetUsers: List<User>): UpgradeUserLevelsInfo {
