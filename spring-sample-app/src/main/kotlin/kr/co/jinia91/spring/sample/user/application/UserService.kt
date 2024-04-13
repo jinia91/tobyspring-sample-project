@@ -1,13 +1,16 @@
 package kr.co.jinia91.spring.sample.user.application
 
 import kr.co.jinia91.spring.sample.user.domain.AlreadyUserIdExist
+import kr.co.jinia91.spring.sample.user.domain.EVENT_STATUS
 import kr.co.jinia91.spring.sample.user.domain.User
+import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradePolicy
 import kr.co.jinia91.spring.sample.user.domain.UserRepository
 import org.springframework.stereotype.Service
 
 @Service
 class UserService(
     private val userRepository: UserRepository,
+    private val userLevelUpgradePolicy: List<UserLevelUpgradePolicy>
 ) {
     fun signUp(command: SignUpUserCommand): SignUpUserInfo {
         command.validate()
@@ -36,9 +39,13 @@ class UserService(
     }
 
     fun upgradeUserLevels(): UpgradeUserLevelsInfo {
+        val policy = userLevelUpgradePolicy.find{
+            EVENT_STATUS == it.supportingEventStatus
+        } ?: throw IllegalArgumentException("No policy found for $EVENT_STATUS")
+
         val targetUsers = userRepository.findAll()
-            .filter { User.UserLevelUpgradePolicy.canUpgradeLevel(it) }
-        targetUsers.forEach { it.tryUpgradeLevel() }
+            .filter { policy.canUpgradeLevel(it) }
+        targetUsers.forEach { it.tryUpgradeLevel(policy) }
         userRepository.saveAll(targetUsers)
         return buildInfo(targetUsers)
     }

@@ -32,8 +32,8 @@ data class User constructor(
         require(password.matches(Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,16}\$"))) { throw InvalidPassword() }
     }
 
-    fun tryUpgradeLevel() {
-        val canUpgrade = UserLevelUpgradePolicy.canUpgradeLevel(this)
+    fun tryUpgradeLevel(policy: UserLevelUpgradePolicy) {
+        val canUpgrade = policy.canUpgradeLevel(this)
         if (canUpgrade) {
             level = level.nextLevel()
         }
@@ -49,17 +49,6 @@ data class User constructor(
                 logInCount = 0,
                 postCount = 0,
             )
-        }
-    }
-    object UserLevelUpgradePolicy {
-        const val MIN_LOG_COUNT_FOR_SILVER = 50
-        const val MIN_POST_COUNT_FOR_GOLD = 30
-        fun canUpgradeLevel(user: User): Boolean {
-            return when (user.level) {
-                Level.BASIC -> user.logInCount >= MIN_LOG_COUNT_FOR_SILVER
-                Level.SILVER -> user.postCount >= MIN_POST_COUNT_FOR_GOLD
-                Level.GOLD -> false
-            }
         }
     }
 }

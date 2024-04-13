@@ -4,6 +4,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import kr.co.jinia91.spring.sample.user.domain.User
 import kr.co.jinia91.spring.sample.user.adapters.persistance.UserDao
+import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradeDefaultPolicy.MIN_LOG_COUNT_FOR_SILVER
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -57,7 +58,7 @@ class UserDaoTests {
             name = "changed",
             password = "1Q2w3e4r1!",
             level = User.Level.SILVER,
-            logInCount = User.UserLevelUpgradePolicy.MIN_LOG_COUNT_FOR_SILVER + 10
+            logInCount = MIN_LOG_COUNT_FOR_SILVER + 10
         )
         // when
         sut.insertOrUpdate(updatedUser)

@@ -4,7 +4,13 @@ import io.kotest.assertions.withClue
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import kr.co.jinia91.spring.sample.user.application.UserService
+import kr.co.jinia91.spring.sample.user.domain.EVENT_STATUS
+import kr.co.jinia91.spring.sample.user.domain.EventStatus
 import kr.co.jinia91.spring.sample.user.domain.User
+import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradeDefaultPolicy
+import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradeDefaultPolicy.MIN_LOG_COUNT_FOR_SILVER
+import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradeDefaultPolicy.MIN_POST_COUNT_FOR_GOLD
+import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradeEventPolicy
 import kr.co.jinia91.spring.sample.user.domain.UserRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -42,7 +48,7 @@ class UpgradeUserLevelsTests {
                 name = "jinia",
                 password = "1Q2w3e4r1!"
             ).apply {
-                logInCount = User.UserLevelUpgradePolicy.MIN_LOG_COUNT_FOR_SILVER
+                logInCount = MIN_LOG_COUNT_FOR_SILVER
             }
             userRepository.save(userWith50LogInCount)
         }
@@ -79,8 +85,8 @@ class UpgradeUserLevelsTests {
         withClue("게시글 30회를 작성한 SILVER 유저가 존재한다") {
             val userWith30PostCount = validUser().apply {
                 level = User.Level.SILVER
-                logInCount = User.UserLevelUpgradePolicy.MIN_LOG_COUNT_FOR_SILVER
-                postCount = User.UserLevelUpgradePolicy.MIN_POST_COUNT_FOR_GOLD
+                logInCount = MIN_LOG_COUNT_FOR_SILVER
+                postCount = MIN_POST_COUNT_FOR_GOLD
             }
             userRepository.save(userWith30PostCount)
         }
@@ -99,8 +105,8 @@ class UpgradeUserLevelsTests {
         // given
         withClue("게시글 30회를 작성한 BASIC 유저가 존재한다") {
             val noneUpgradeTargetUser = validUser().apply {
-                logInCount = User.UserLevelUpgradePolicy.MIN_LOG_COUNT_FOR_SILVER
-                postCount = User.UserLevelUpgradePolicy.MIN_POST_COUNT_FOR_GOLD
+                logInCount = MIN_LOG_COUNT_FOR_SILVER
+                postCount = MIN_POST_COUNT_FOR_GOLD
             }
             userRepository.save(noneUpgradeTargetUser)
         }
@@ -148,26 +154,55 @@ class UpgradeUserLevelsTests {
     private fun build5Users() = listOf(
         User.newOne("1", "jinia1", "1Q2w3e4r1!").apply {
             level = User.Level.BASIC
-            logInCount = 49
+            postCount = MIN_POST_COUNT_FOR_GOLD - 1
         },
         User.newOne("2", "jinia2", "1Q2w3e4r1!").apply {
             level = User.Level.BASIC
-            logInCount = User.UserLevelUpgradePolicy.MIN_LOG_COUNT_FOR_SILVER
+            logInCount = MIN_LOG_COUNT_FOR_SILVER
         },
         User.newOne("3", "jinia3", "1Q2w3e4r1!").apply {
             level = User.Level.SILVER
-            logInCount = 60
-            postCount = 29
+            logInCount = MIN_LOG_COUNT_FOR_SILVER + 10
+            postCount = MIN_POST_COUNT_FOR_GOLD - 1
+
         },
         User.newOne("4", "jinia4", "1Q2w3e4r1!").apply {
             level = User.Level.SILVER
-            logInCount = User.UserLevelUpgradePolicy.MIN_LOG_COUNT_FOR_SILVER + 10
-            postCount = User.UserLevelUpgradePolicy.MIN_POST_COUNT_FOR_GOLD
+            logInCount = MIN_LOG_COUNT_FOR_SILVER + 10
+            postCount = MIN_POST_COUNT_FOR_GOLD
         },
         User.newOne("5", "jinia5", "1Q2w3e4r1!").apply {
             level = User.Level.GOLD
-            logInCount = User.UserLevelUpgradePolicy.MIN_LOG_COUNT_FOR_SILVER + 10
-            postCount = User.UserLevelUpgradePolicy.MIN_POST_COUNT_FOR_GOLD + 10
+            logInCount = MIN_LOG_COUNT_FOR_SILVER + 10
+            postCount = MIN_POST_COUNT_FOR_GOLD + 10
         },
     )
+
+    @Test
+    fun `이벤트 기간동안은 이벤트 정책에 따라 레벨이 업그레이드 된다`() {
+        // given
+        EVENT_STATUS = EventStatus.EVENT
+
+        withClue("이벤트 기간동안 로그인 5회를 한 BASIC 신규 유저가 존재한다") {
+            val userWith5LogInCount = User.newOne(
+                id = "11112",
+                name = "jinia",
+                password = "1Q2w3e4r1!"
+            ).apply {
+                logInCount = UserLevelUpgradeEventPolicy.MIN_LOG_COUNT_FOR_SILVER
+            }
+            userRepository.save(userWith5LogInCount)
+        }
+
+        // when
+        sut.upgradeUserLevels()
+
+        // then
+        val user = userRepository.findById("11112")
+        user.shouldNotBeNull()
+        user.level shouldBe User.Level.SILVER
+
+        // tearDown
+        EVENT_STATUS = EventStatus.DEFAULT
+    }
 }
