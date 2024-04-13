@@ -27,7 +27,8 @@ class DataSourceConfig {
             name = rs.getString("name"),
             password = rs.getString("password"),
             level = User.Level.valueOf(rs.getString("level")),
-            logInCount = rs.getInt("login_cnt")
+            logInCount = rs.getInt("login_cnt"),
+            postCount = rs.getInt("post_cnt")
         )
     }
 

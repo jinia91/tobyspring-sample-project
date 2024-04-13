@@ -8,17 +8,14 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 import sample.sample.validUser
 
 @SpringBootTest
+@Transactional
 class UserDaoTests {
     @Autowired
     private lateinit var sut: UserDao
-
-    @BeforeEach
-    fun setUp() {
-        sut.deleteAll()
-    }
 
     @Test
     fun `테스트 실행시 유저는 없어야 한다`() {
@@ -30,8 +27,11 @@ class UserDaoTests {
 
     @Test
     fun `유저를 추가하면 정상 저장된다`() {
+        val allUsers = sut.getAll()
+        println(allUsers)
+
         // given
-        val user = validUser
+        val user = validUser()
 
         // when
         val foundUser = sut.addAndGet(user)
@@ -40,8 +40,8 @@ class UserDaoTests {
         foundUser.shouldNotBeNull()
         foundUser.id shouldBe user.id
         foundUser.name shouldBe user.name
-        foundUser.level shouldBe User.Level.BASIC
         foundUser.logInCount shouldBe 0
+        foundUser.level shouldBe User.Level.BASIC
 
         val userCount = sut.getCount()
         userCount shouldBe 1
@@ -50,7 +50,7 @@ class UserDaoTests {
     @Test
     fun `기존 유저를 업데이트하면 정상적으로 업데이트 된다`() {
         // given
-        val user = validUser
+        val user = validUser()
         sut.addAndGet(user)
 
         val updatedUser = user.copy(
@@ -63,7 +63,7 @@ class UserDaoTests {
         sut.insertOrUpdate(updatedUser)
 
         // then
-        val foundUser = sut.get(validUser.id)
+        val foundUser = sut.get(validUser().id)
         foundUser.shouldNotBeNull()
         foundUser.name shouldBe updatedUser.name
         foundUser.password shouldBe updatedUser.password

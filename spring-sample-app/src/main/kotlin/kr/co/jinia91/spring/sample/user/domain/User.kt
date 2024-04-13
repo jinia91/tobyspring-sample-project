@@ -5,7 +5,8 @@ data class User constructor(
     var name: String,
     var password: String,
     var level: Level,
-    var logInCount: Int
+    var logInCount: Int,
+    var postCount: Int,
 ) {
     enum class Level {
         BASIC,
@@ -45,7 +46,8 @@ data class User constructor(
                 name = name,
                 password = password,
                 level = Level.BASIC,
-                logInCount = 0
+                logInCount = 0,
+                postCount = 0,
             )
         }
     }
@@ -53,7 +55,7 @@ data class User constructor(
         fun canUpgradeLevel(user: User): Boolean {
             return when (user.level) {
                 Level.BASIC -> user.logInCount >= 50
-                Level.SILVER -> false
+                Level.SILVER -> user.postCount >= 30
                 Level.GOLD -> false
             }
         }

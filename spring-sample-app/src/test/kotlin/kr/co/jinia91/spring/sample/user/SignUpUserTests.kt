@@ -9,11 +9,13 @@ import kr.co.jinia91.spring.sample.user.domain.InvalidPassword
 import kr.co.jinia91.spring.sample.user.domain.InvalidUserName
 import kr.co.jinia91.spring.sample.user.domain.User
 import kr.co.jinia91.spring.sample.user.domain.UserRepository
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 import sample.sample.validSignUpUserCommand
 
 /**
@@ -33,6 +35,7 @@ import sample.sample.validSignUpUserCommand
  * - 사용자는 최초 가입시 BASIC 레벨이고 , 이후 활동에 따라 한단계씩 업그레이드 될 수 있다
  */
 @SpringBootTest
+@Transactional
 class SignUpUserTests {
     @Autowired
     private lateinit var sut: UserService
@@ -43,7 +46,7 @@ class SignUpUserTests {
     @Test
     fun `유효한 사용자 정보가 주어지면 사용자는 정상적으로 가입되고 BASIC 레벨이다`() {
         // given
-        val command = validSignUpUserCommand
+        val command = validSignUpUserCommand()
 
         // when
         val signUpUserInfo = sut.signUp(command)
@@ -60,10 +63,10 @@ class SignUpUserTests {
     fun `아이디가 중복되면 가입에 실패한다`() {
         // given
         withClue("jinia91 아이디가 존재한다") {
-            val command = validSignUpUserCommand
+            val command = validSignUpUserCommand()
             sut.signUp(command)
         }
-        val command = withClue("동일 아이디로 가입 준비한다") { validSignUpUserCommand }
+        val command = withClue("동일 아이디로 가입 준비한다") { validSignUpUserCommand() }
 
         // when, then
         shouldThrow<AlreadyUserIdExist> {
@@ -74,7 +77,7 @@ class SignUpUserTests {
     @Test
     fun `이름이 11자 이상이면 가입에 실패한다`() {
         // given
-        val invalidCommand = validSignUpUserCommand.copy(
+        val invalidCommand = validSignUpUserCommand().copy(
             name = "12345678901"
         )
 
@@ -87,7 +90,7 @@ class SignUpUserTests {
     @Test
     fun `이름이 1자 미만이면 가입에 실패한다`() {
         // given
-        val invalidCommand = validSignUpUserCommand.copy(
+        val invalidCommand = validSignUpUserCommand().copy(
             name = ""
         )
 
@@ -108,7 +111,7 @@ class SignUpUserTests {
         @Test
         fun `비밀번호가 8자 미만이면 가입에 실패한다`() {
             // given
-            val invalidCommand = validSignUpUserCommand.copy(
+            val invalidCommand = validSignUpUserCommand().copy(
                 password = "1Q2w3e!"
             )
 
@@ -121,7 +124,7 @@ class SignUpUserTests {
         @Test
         fun `비밀번호가 16자 초과이면 가입에 실패한다`() {
             // given
-            val invalidCommand = validSignUpUserCommand.copy(
+            val invalidCommand = validSignUpUserCommand().copy(
                 password = "1Q2w3e4r1!1q2w3e4r"
             )
 
@@ -134,7 +137,7 @@ class SignUpUserTests {
         @Test
         fun `비밀번호가 소문자를 포함하지 않으면 가입에 실패한다`() {
             // given
-            val invalidCommand = validSignUpUserCommand.copy(
+            val invalidCommand = validSignUpUserCommand().copy(
                 password = "QWERTYUI1!"
             )
 
@@ -147,7 +150,7 @@ class SignUpUserTests {
         @Test
         fun `비밀번호가 대문자를 포함하지 않으면 가입에 실패한다`() {
             // given
-            val invalidCommand = validSignUpUserCommand.copy(
+            val invalidCommand = validSignUpUserCommand().copy(
                 password = "qwertyui1!",
             )
 
@@ -160,7 +163,7 @@ class SignUpUserTests {
         @Test
         fun `비밀번호가 숫자를 포함하지 않으면 가입에 실패한다`() {
             // given
-            val invalidCommand = validSignUpUserCommand.copy(
+            val invalidCommand = validSignUpUserCommand().copy(
                 password = "QWERTYUI!"
             )
 
@@ -173,7 +176,7 @@ class SignUpUserTests {
         @Test
         fun `비밀번호가 특수문자를 포함하지 않으면 가입에 실패한다`() {
             // given
-            val invalidCommand = validSignUpUserCommand.copy(
+            val invalidCommand = validSignUpUserCommand().copy(
                 password = "QWEr1YUI1"
             )
 
@@ -182,10 +185,5 @@ class SignUpUserTests {
                 sut.signUp(invalidCommand)
             }
         }
-    }
-
-    @BeforeEach
-    fun setUp() {
-        userRepository.deleteAll()
     }
 }

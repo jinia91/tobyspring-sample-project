@@ -6,10 +6,12 @@ import io.kotest.matchers.shouldBe
 import kr.co.jinia91.spring.sample.user.application.UserService
 import kr.co.jinia91.spring.sample.user.domain.User
 import kr.co.jinia91.spring.sample.user.domain.UserRepository
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.transaction.annotation.Transactional
 import sample.sample.validUser
 
 /**
@@ -22,6 +24,7 @@ import sample.sample.validUser
  *   (유즈케이스의 관심사가 아님, 어댑터 레이어에서 제어하면 된다)
  */
 @SpringBootTest
+@Transactional
 class UpgradeUserLevelsTests {
     @Autowired
     private lateinit var sut: UserService
@@ -56,7 +59,7 @@ class UpgradeUserLevelsTests {
     fun `BASIC 사용자가 아니면 50 이상 로그인해도 SILVER 레벨로 업그레이드 되지 않는다`() {
         // given
         withClue("BASIC 신규 유저가 존재한다") {
-            val noneUpgradeTargetUser = validUser
+            val noneUpgradeTargetUser = validUser()
             userRepository.save(noneUpgradeTargetUser)
         }
 
@@ -73,7 +76,7 @@ class UpgradeUserLevelsTests {
     fun `SILVER 레벨에서 30회 이상 게시글을 작성하면 GOLD 레벨로 업그레이드 된다`() {
         // given
         withClue("게시글 30회를 작성한 SILVER 유저가 존재한다") {
-            val userWith30PostCount = validUser.apply {
+            val userWith30PostCount = validUser().apply {
                 level = User.Level.SILVER
                 logInCount = 50
                 postCount = 30
@@ -92,10 +95,5 @@ class UpgradeUserLevelsTests {
 
     @Test
     fun `30회 이상 게시글을 작성하더라도 SILVER 레벨이 아니면 GOLD 레벨로 업그레이드 되지 않는다`() {
-    }
-
-    @BeforeEach
-    fun setUp() {
-        userRepository.deleteAll()
     }
 }
