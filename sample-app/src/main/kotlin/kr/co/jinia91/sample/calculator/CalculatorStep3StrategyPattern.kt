@@ -57,13 +57,13 @@ enum class CalculateOperation {
     SUM, MULTIPLY
 }
 
-interface CalculatorStrategy {
+sealed interface CalculatorStrategy {
     fun calculate(result: Int, number: Int): Int
     fun initValue(): Int
     fun isSupport(): CalculateOperation
 }
 
-class PlusStrategy : CalculatorStrategy {
+data object PlusStrategy : CalculatorStrategy {
     override fun calculate(result: Int, number: Int): Int {
         return result + number
     }
@@ -77,7 +77,7 @@ class PlusStrategy : CalculatorStrategy {
     }
 }
 
-class MultiplyStrategy : CalculatorStrategy {
+data object MultiplyStrategy : CalculatorStrategy {
     override fun calculate(result: Int, number: Int): Int {
         return result * number
     }
