@@ -151,6 +151,17 @@ class UserServiceTests {
 
             @Test
             fun `비밀번호가 대문자를 포함하지 않으면 가입에 실패한다`() {
+                // given
+                val invalidCommand = SignUpUserCommand(
+                    id = "jinia91",
+                    name = "jinia",
+                    password = "qwertyui1!",
+                )
+
+                // when, then
+                shouldThrow<InvalidPassword> {
+                    sut.signUp(invalidCommand)
+                }
             }
 
             @Test
