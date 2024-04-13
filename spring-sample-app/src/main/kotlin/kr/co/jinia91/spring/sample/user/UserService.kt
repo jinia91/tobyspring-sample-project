@@ -24,11 +24,10 @@ class UserService(
     }
 
     private fun SignUpUserCommand.toNewUser(): User {
-        return User(
+        return User.newOne(
             id = id,
             name = name,
-            password = password,
-            level = User.Level.BASIC
+            password = password
         )
     }
 }

@@ -5,3 +5,5 @@ abstract class BusinessExceptions :RuntimeException()
 abstract class UserException() : BusinessExceptions()
 
 class AlreadyUserIdExist : UserException()
+
+class InvalidUserName : UserException()
