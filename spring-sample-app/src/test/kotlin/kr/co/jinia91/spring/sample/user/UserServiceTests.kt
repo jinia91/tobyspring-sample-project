@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import sample.sample.validSignUpUserCommand
 
 @SpringBootTest
 class UserServiceTests {
@@ -38,13 +39,7 @@ class UserServiceTests {
         @Test
         fun `유효한 사용자 정보가 주어지면 사용자는 정상적으로 가입되고 BASIC 레벨이다`() {
             // given
-            val command = withClue("유효한 사용자 정보") {
-                SignUpUserCommand(
-                    id = "jinia91",
-                    name = "jinia",
-                    password = "1q2w3e4r1!",
-                )
-            }
+            val command = validSignUpUserCommand
 
             // when
             val signUpUserInfo = sut.signUp(command)
@@ -60,20 +55,10 @@ class UserServiceTests {
         fun `아이디가 중복되면 가입에 실패한다`() {
             // given
             withClue("jinia91 아이디가 존재한다") {
-                val command = SignUpUserCommand(
-                    id = "jinia91",
-                    name = "jinia",
-                    password = "1q2w3e4r1!",
-                )
+                val command = validSignUpUserCommand
                 sut.signUp(command)
             }
-            val command = withClue("동일 아이디로 가입 준비한다") {
-                SignUpUserCommand(
-                    id = "jinia91",
-                    name = "jinia",
-                    password = "1q2w3e4r1!",
-                )
-            }
+            val command = withClue("동일 아이디로 가입 준비한다") { validSignUpUserCommand }
 
             // when, then
             shouldThrow<AlreadyUserIdExist> {
@@ -151,6 +136,17 @@ class UserServiceTests {
 
             @Test
             fun `비밀번호가 소문자를 포함하지 않으면 가입에 실패한다`() {
+                // given
+                val invalidCommand = SignUpUserCommand(
+                    id = "jinia91",
+                    name = "jinia",
+                    password = "QWERTYUI1!",
+                )
+
+                // when, then
+                shouldThrow<InvalidPassword> {
+                    sut.signUp(invalidCommand)
+                }
             }
 
             @Test
