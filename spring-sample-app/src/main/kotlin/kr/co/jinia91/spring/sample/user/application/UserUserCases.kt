@@ -6,8 +6,10 @@ import kr.co.jinia91.spring.sample.user.domain.EVENT_STATUS
 import kr.co.jinia91.spring.sample.user.domain.User
 import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradePolicy
 import kr.co.jinia91.spring.sample.user.domain.UserRepository
+import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.jdbc.datasource.DataSourceUtils
 import org.springframework.stereotype.Service
+import org.springframework.transaction.support.DefaultTransactionDefinition
 import org.springframework.transaction.support.TransactionSynchronizationManager
 
 interface UserUserCases {
@@ -56,18 +58,14 @@ open class UserServiceImpl(
             .sortedBy { it.id }
             .filter { policy.canUpgradeLevel(it) }
 
-        TransactionSynchronizationManager.initSynchronization()
-        DataSourceUtils.getConnection(dataSource).use { connection ->
-            connection.autoCommit = false
-            try {
-                targetUsers.forEach { upgradeUserLevel(it, policy) }
-            } catch (e: Exception) {
-                throw e
-            } finally {
-                TransactionSynchronizationManager.unbindResource(dataSource)
-                TransactionSynchronizationManager.clearSynchronization()
-            }
+        val transactionManager = DataSourceTransactionManager(dataSource)
+        val status = transactionManager.getTransaction(DefaultTransactionDefinition())
 
+        try {
+            targetUsers.forEach { upgradeUserLevel(it, policy) }
+        } catch (e: Exception) {
+            transactionManager.rollback(status)
+            throw e
         }
         return buildInfo(targetUsers)
     }
