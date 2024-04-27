@@ -47,7 +47,6 @@ open class UserServiceImpl(
         )
     }
 
-    @Transactional
     override fun upgradeUserLevels(): UpgradeUserLevelsInfo {
         val policy = userLevelUpgradePolicy.find {
             EVENT_STATUS == it.supportingEventStatus
