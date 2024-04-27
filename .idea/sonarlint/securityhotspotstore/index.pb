@@ -29,3 +29,11 @@ v
 Fspring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/proxy.kt,1/9/195cc0397a5f5b81093fdd7ff44a7318e45e0e9e
 Ü
 Vspring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/proxy/ReflectionTests.kt,0/9/0966fb8c2a4595309f260ae13b35d0e411456bb0
+è
+_spring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/proxy/dynamic/UpperCaseHandler.kt,1/7/172cf9b8ea7ac4c2db667f6fca0d185c22efe866
+è
+_spring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/proxy/dynamic/LoggingDecorator.kt,3/8/386d62e493d7603515cb1bd333d24239703f0ac1
+î
+dspring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/proxy/dynamic/LoggingDecoratorTests.kt,7/9/797033000488a6507beae5beb5e8b212073231fb
+†
+pspring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/proxy/dynamic/LoggingDecoratorDynamicProxyTests.kt,e/6/e67aa27c10625b2bc0bddaf7b4b2a0d19e1433dc
