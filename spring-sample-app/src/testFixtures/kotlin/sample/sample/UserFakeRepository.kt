@@ -1,0 +1,29 @@
+package sample.sample
+
+import kr.co.jinia91.spring.sample.user.domain.User
+import kr.co.jinia91.spring.sample.user.domain.UserRepository
+
+class UserFakeRepository : UserRepository {
+    private val users = mutableMapOf<String, User>()
+
+    override fun save(user: User) : User {
+        users[user.id] = user
+        return user
+    }
+
+    override fun deleteAll() {
+        users.clear()
+    }
+
+    override fun findById(id: String): User? {
+        return users[id]
+    }
+
+    override fun findAll(): List<User> {
+        return users.values.toList()
+    }
+
+    override fun saveAll(users: List<User>) {
+        users.forEach { save(it) }
+    }
+}
