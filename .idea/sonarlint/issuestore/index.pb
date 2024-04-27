@@ -23,3 +23,9 @@ Yspring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/user/infra/Remind
 _spring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/application/UserUserCases.kt,8/9/89c2dbe7ea8f13a1547ad16c4b577787ba8499b3
 •
 espring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/application/UserUserCasesWithTx.kt,5/7/57cd4ef019804ff9d71c24c8b71a8cd8d081ba47
+R
+"spring-sample-app/build.gradle.kts,9/1/912b9ab8a3052ab54312a73d3eb670a908c2223f
+v
+Fspring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/proxy.kt,1/9/195cc0397a5f5b81093fdd7ff44a7318e45e0e9e
+†
+Vspring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/proxy/ReflectionTests.kt,0/9/0966fb8c2a4595309f260ae13b35d0e411456bb0
