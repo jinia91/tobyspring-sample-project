@@ -3,10 +3,14 @@ package kr.co.jinia91.spring.sample.user
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
+import java.lang.reflect.InvocationTargetException
+import java.lang.reflect.Proxy
+import java.lang.reflect.UndeclaredThrowableException
 import javax.sql.DataSource
 import kr.co.jinia91.spring.sample.user.application.UserServiceImpl
 import kr.co.jinia91.spring.sample.user.application.UserServiceTxImpl
 import kr.co.jinia91.spring.sample.user.application.UserUserCases
+import kr.co.jinia91.spring.sample.user.application.infra.TransactionProxy
 import kr.co.jinia91.spring.sample.user.domain.Reminder
 import kr.co.jinia91.spring.sample.user.domain.User
 import kr.co.jinia91.spring.sample.user.domain.UserLevelUpgradePolicy
@@ -37,14 +41,33 @@ class TransactionTestConfig {
     @Autowired
     lateinit var transactionManager: PlatformTransactionManager
 
+    //
+//    @Bean
+//    @Qualifier("userTransactionService")
+//    fun userService(): UserUserCases {
+//        val fake = UserFakeService(userRepository, userLevelUpgradePolicy, reminder).apply {
+//            setExId("4")
+//        }
+//
+//        return UserServiceTxImpl(fake, transactionManager)
+//    }
+//
+    // dynamic proxy
     @Bean
     @Qualifier("userTransactionService")
     fun userService(): UserUserCases {
-        val fake = UserFakeService(userRepository, userLevelUpgradePolicy, reminder).apply {
-            setExId("4")
-        }
+        val transactionHandlerProxy = Proxy.newProxyInstance(
+            UserUserCases::class.java.classLoader,
+            arrayOf(UserUserCases::class.java),
+            TransactionProxy(
+                UserFakeService(userRepository, userLevelUpgradePolicy, reminder).apply {
+                    setExId("4")
+                },
+                transactionManager, "upgradeUserLevels"
+            )
+        ) as UserUserCases
 
-        return UserServiceTxImpl(fake, transactionManager)
+        return transactionHandlerProxy
     }
 }
 
@@ -66,7 +89,7 @@ class TransactionTests {
         withClue("유저 5명이 순서대로 존재한다") { given5UserExpectingToUpgrade() }
 
         // when
-        shouldThrow<IllegalArgumentException> { sut.upgradeUserLevels() }
+        shouldThrow<UndeclaredThrowableException> { sut.upgradeUserLevels() }
 
         // then
         val users = userRepository.findAll()
