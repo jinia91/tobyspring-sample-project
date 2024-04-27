@@ -4,6 +4,8 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
 import javax.sql.DataSource
+import kr.co.jinia91.spring.sample.user.application.UserServiceImpl
+import kr.co.jinia91.spring.sample.user.application.UserServiceTxImpl
 import kr.co.jinia91.spring.sample.user.application.UserUserCases
 import kr.co.jinia91.spring.sample.user.domain.Reminder
 import kr.co.jinia91.spring.sample.user.domain.User
@@ -12,6 +14,7 @@ import kr.co.jinia91.spring.sample.user.domain.UserRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
@@ -31,10 +34,17 @@ class TransactionTestConfig {
     @Autowired
     lateinit var reminder: Reminder
 
+    @Autowired
+    lateinit var transactionManager: PlatformTransactionManager
+
     @Bean
-    @Primary
+    @Qualifier("userTransactionService")
     fun userService(): UserUserCases {
-        return UserFakeService(userRepository, userLevelUpgradePolicy, reminder)
+        val fake = UserFakeService(userRepository, userLevelUpgradePolicy, reminder).apply {
+            setExId("4")
+        }
+
+        return UserServiceTxImpl(fake, transactionManager)
     }
 }
 
@@ -44,17 +54,11 @@ class TransactionTestConfig {
 class TransactionTests {
 
     @Autowired
-    private lateinit var sut: UserFakeService
+    @Qualifier("userTransactionService")
+    private lateinit var sut: UserUserCases
 
     @Autowired
     private lateinit var userRepository: UserRepository
-
-    private val exId = "4"
-
-    @BeforeEach
-    fun setUp() {
-        sut.setExId(exId)
-    }
 
     @Test
     fun `유저 레벨 업그레이드 중 에러가 발생하면 롤백된다`() {

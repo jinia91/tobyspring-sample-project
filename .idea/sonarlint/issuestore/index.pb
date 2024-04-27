@@ -21,3 +21,5 @@ Yspring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/user/infra/Remind
 ^spring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/user/persistance/UserDaoTests.kt,3/a/3ac22483d4cc14880fca2e824bd9084e78f42421
 è
 _spring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/application/UserUserCases.kt,8/9/89c2dbe7ea8f13a1547ad16c4b577787ba8499b3
+ï
+espring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/application/UserUserCasesWithTx.kt,5/7/57cd4ef019804ff9d71c24c8b71a8cd8d081ba47
