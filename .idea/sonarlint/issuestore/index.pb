@@ -152,3 +152,5 @@ bspring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/application/
 hspring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/application/infra/TransactionProxy.kt,d/8/d8646a6c1c9077e53a62220687884cc2c7fef979
 è
 _spring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/proxy/DynamicProxyServiceTests.kt,1/5/15ab6df1a389687a6da4153552929e9e0000f5ec
+ä
+Zspring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/proxy/factorybean/Message.kt,4/5/4557e93f9b6df90800c08aee5a94fa0b684f24a7
