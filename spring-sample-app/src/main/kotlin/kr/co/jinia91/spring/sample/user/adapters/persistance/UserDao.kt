@@ -17,26 +17,26 @@ class UserDao(
     }
 
     fun insertOrUpdate(user: User) {
-        jdbcTemplate.update(userDaoSqlDefinition.insertOrUpdate,
+        jdbcTemplate.update(userDaoSqlDefinition.queries["insertOrUpdate"]!!,
             user.id, user.name, user.password, user.level.toString(), user.logInCount, user.postCount, user.email,
             user.name, user.password, user.level.toString(), user.logInCount, user.postCount, user.email
         )
     }
 
     fun get(id: String): User? {
-        return jdbcTemplate.query(userDaoSqlDefinition.select, userMapper, id)
+        return jdbcTemplate.query(userDaoSqlDefinition.queries["select"]!!, userMapper, id)
             .firstOrNull()
     }
 
     fun getAll(): List<User> {
-        return jdbcTemplate.query(userDaoSqlDefinition.selectAll, userMapper)
+        return jdbcTemplate.query(userDaoSqlDefinition.queries["selectAll"]!!, userMapper)
     }
 
     fun deleteAll() {
-        jdbcTemplate.execute(userDaoSqlDefinition.deleteAll)
+        jdbcTemplate.execute(userDaoSqlDefinition.queries["deleteAll"]!!)
     }
 
     fun getCount(): Int {
-        return jdbcTemplate.queryForObject(userDaoSqlDefinition.count, Int::class.java)!!
+        return jdbcTemplate.queryForObject(userDaoSqlDefinition.queries["count"]!!, Int::class.java)!!
     }
 }

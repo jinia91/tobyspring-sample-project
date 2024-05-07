@@ -1,7 +1,8 @@
 sql:
   user:
-    select: "select * from user where id = ?"
-    deleteAll: "DELETE FROM user"
-    count: "select count(*) from user"
-    selectAll: "select * from user"
-    insert-or-update: "INSERT INTO user (id, name, password, level, login_cnt, post_cnt, email) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, password = ?, level = ?, login_cnt = ?, post_cnt = ?, email = ?"
+    queries:
+      select: "select * from user where id = ?"
+      deleteAll: "DELETE FROM user"
+      count: "select count(*) from user"
+      selectAll: "select * from user"
+      insertOrUpdate: "INSERT INTO user (id, name, password, level, login_cnt, post_cnt, email) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, password = ?, level = ?, login_cnt = ?, post_cnt = ?, email = ?"
