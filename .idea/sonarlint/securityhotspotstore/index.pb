@@ -35,3 +35,7 @@ pspring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/adapters/per
 qspring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/adapters/persistance/sql/DefaultSqlProvider.kt,2/5/25059b525b02cfe0cf58039eb8ca55b959689090
 {
 Kspring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/TestConfig.kt,c/5/c535256e39a52b59fc9fb8666f0974cdd419c5db
+Ÿ
+ospring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/adapters/persistance/sql/DefaultSqlReader.kt,4/e/4ef9a7d79ffaee0a1394c888e6def30d98b5ae47
+¡
+qspring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/adapters/persistance/sql/DefaultSqlRegistry.kt,e/0/e05573419410290b5043f0157d579b31de7338ae
