@@ -1,5 +1,6 @@
 package kr.co.jinia91.spring.sample.user.adapters.persistance
 
+import kr.co.jinia91.spring.sample.user.adapters.persistance.sql.SqlProvider
 import kr.co.jinia91.spring.sample.user.domain.User
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper

@@ -21,3 +21,17 @@ bspring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/adapters/per
 Vspring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/user/TransactionTests.kt,f/9/f9c2ad65f02bc30ce63edf68ed7b11e83a502cd2
 –
 fspring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/adapters/persistance/SqlProvider.kt,2/e/2eae73428c19f94803063e6fb59bbd81da8ba2a1
+£
+sspring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/adapters/persistance/sql/UserDaoSqlDefinition.kt,b/7/b7b72dc4dc9f4dadbfd7f3cbf9ff02a8500f4662
+š
+jspring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/adapters/persistance/sql/SqlProvider.kt,d/c/dcbddb1e4e5e43976277875386d685fe5f30c9d5
+˜
+hspring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/adapters/persistance/sql/SqlReader.kt,6/9/69d947598a143520fafa9617b9ed5f67dcd0dd11
+š
+jspring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/adapters/persistance/sql/SqlRegistry.kt,9/c/9cf137ff85b830f0ea4bbdd680af4c9f225842c3
+ 
+pspring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/adapters/persistance/sql/SimpleSqlProvider.kt,9/3/93e71a105a2150aee93deb400abbfe8a1f82a236
+¡
+qspring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/adapters/persistance/sql/DefaultSqlProvider.kt,2/5/25059b525b02cfe0cf58039eb8ca55b959689090
+{
+Kspring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/TestConfig.kt,c/5/c535256e39a52b59fc9fb8666f0974cdd419c5db
