@@ -5,38 +5,47 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 
+interface UserDao{
+    fun addAndGet(user: User): User
+    fun insertOrUpdate(user: User)
+    fun get(id: String): User?
+    fun getAll(): List<User>
+    fun deleteAll()
+    fun getCount(): Int
+}
+
 @Repository
-class UserDao(
+class UserDaoJdbc(
     private val jdbcTemplate: JdbcTemplate,
     private val userMapper: RowMapper<User>,
-    private val userDaoSqlDefinition: UserDaoSqlDefinition,
-) {
-    fun addAndGet(user: User): User {
+    private val sqlProvider: SqlProvider
+) : UserDao {
+    override fun addAndGet(user: User): User {
         insertOrUpdate(user)
         return get(user.id) ?: throw IllegalStateException("User not persist")
     }
 
-    fun insertOrUpdate(user: User) {
-        jdbcTemplate.update(userDaoSqlDefinition.queries["insertOrUpdate"]!!,
+    override fun insertOrUpdate(user: User) {
+        jdbcTemplate.update(sqlProvider.getSql("user", "insertOrUpdate"),
             user.id, user.name, user.password, user.level.toString(), user.logInCount, user.postCount, user.email,
             user.name, user.password, user.level.toString(), user.logInCount, user.postCount, user.email
         )
     }
 
-    fun get(id: String): User? {
-        return jdbcTemplate.query(userDaoSqlDefinition.queries["select"]!!, userMapper, id)
+    override fun get(id: String): User? {
+        return jdbcTemplate.query(sqlProvider.getSql("user","select"), userMapper, id)
             .firstOrNull()
     }
 
-    fun getAll(): List<User> {
-        return jdbcTemplate.query(userDaoSqlDefinition.queries["selectAll"]!!, userMapper)
+    override fun getAll(): List<User> {
+        return jdbcTemplate.query(sqlProvider.getSql("user","selectAll"), userMapper)
     }
 
-    fun deleteAll() {
-        jdbcTemplate.execute(userDaoSqlDefinition.queries["deleteAll"]!!)
+    override fun deleteAll() {
+        jdbcTemplate.execute(sqlProvider.getSql("user","deleteAll"))
     }
 
-    fun getCount(): Int {
-        return jdbcTemplate.queryForObject(userDaoSqlDefinition.queries["count"]!!, Int::class.java)!!
+    override fun getCount(): Int {
+        return jdbcTemplate.queryForObject(sqlProvider.getSql("user", "count"), Int::class.java)!!
     }
 }

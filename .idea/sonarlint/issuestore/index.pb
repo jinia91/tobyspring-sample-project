@@ -19,3 +19,5 @@ ospring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/adapters/per
 bspring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/adapters/persistance/UserDao.kt,7/f/7f42b57afebb6b6edf02ace3ebe1e663c5cfed83
 †
 Vspring-sample-app/src/test/kotlin/kr/co/jinia91/spring/sample/user/TransactionTests.kt,f/9/f9c2ad65f02bc30ce63edf68ed7b11e83a502cd2
+–
+fspring-sample-app/src/main/kotlin/kr/co/jinia91/spring/sample/user/adapters/persistance/SqlProvider.kt,2/e/2eae73428c19f94803063e6fb59bbd81da8ba2a1
